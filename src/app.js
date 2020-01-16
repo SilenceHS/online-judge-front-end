@@ -25,15 +25,28 @@ Vue.use(HeyUI);
 Vue.use(VueRouter);
 Vue.use(animated);
 // const router = routerConfig();
-var router=new VueRouter({
-  routes:[
-	{path:'/',component:Main},
-    {path:'/login',component:Login},
-    {path:'/register',component:Register},
+var router = new VueRouter({
+	routes: [{
+			path: '/',
+			component: (resolve) => require(['components/app/app-frame'], resolve),
+			children:[
+				
+			]
+		},
+		{
+			path: '/login',
+			component: (resolve) => require(['components/login/index'], resolve),
+		},
+		{
+			path: '/register',
+			component: (resolve) => require(['components/register/index'], resolve),
+		},
 
-  ]
+
+
+	]
 })
 export default new Vue({
-  router,
-  render: h => h(App)
+	router,
+	render: h => h(App)
 }).$mount('#app');

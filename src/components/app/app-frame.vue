@@ -8,7 +8,7 @@
       </Sider>
       <Layout :headerFixed="layoutConfig.headerFixed">
         <HHeader theme="white">
-          <!-- <appHead @openSetting="openSetting=true" :layoutConfig="layoutConfig"></appHead> -->
+          <appHead @openSetting="openSetting=true" :layoutConfig="layoutConfig"></appHead>
         </HHeader>
         <!-- <SysTabs v-if="layoutConfig.showSystab" homePage="Home"></SysTabs> -->
         <Content>
@@ -30,8 +30,8 @@
 </template>
 <script>
 // import appLayoutSetting from './modules/app-layout-setting';
-// import appHead from './app-header';
- import appMenu from './app-menu';
+import appHead from './app-header';
+import appMenu from './app-menu';
 import appFooter from './app-footer';
 // import SysTabs from '../common/sys-tabs';
 // import store from 'js/vuex/store';
@@ -117,7 +117,7 @@ export default {
     // ...mapState(['siderCollapsed'])
   },
   components: {
-    // appHead,
+     appHead,
      appMenu,
     // SysTabs,
     appFooter,

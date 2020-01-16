@@ -57,12 +57,12 @@ export default {
   },
   {
     title: '官方题库',
-    key: 'login',
+    key: 'officiallib',
     icon: 'icon-book'
   },
   {
     title: '课程题库',
-    key: 'form-folder',
+    key: 'classlib',
     icon: 'icon-align-left',
 	children:[
 		{
@@ -78,12 +78,12 @@ export default {
  
   {
     title: '课程管理',
-    key: 'SysSetting',
+    key: 'class',
     icon: 'icon-paper',
   },
   {
     title: '个人信息',
-    key: 'SysSetting',
+    key: 'info',
     icon: 'icon-cog',
   },
   ]

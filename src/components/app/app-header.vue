@@ -88,13 +88,15 @@
 
 <template>
   <div class="app-header">
-    <div style="width:50px;float:left;"><Button :icon="siderCollapsed ? 'icon-align-right':'icon-align-left'" size="l" noBorder class="font20" @click="siderCollapsed=!siderCollapsed"></Button></div>
-    <div class="float-right app-header-info">
-      <AutoComplete :showDropdownWhenNoResult="false" v-model="searchText" config="globalSearch" placeholder="全局搜索.."></AutoComplete>
+    <!-- <div style="width:50px;float:left;"><Button :icon="siderCollapsed ? 'icon-align-right':'icon-align-left'" size="l" noBorder class="font20" @click="siderCollapsed=!siderCollapsed"></Button></div> -->
+    <div style="width:50px;float:left;"><Button :icon="'icon-align-right'" size="l" noBorder class="font20"></Button></div>
+    
+	<div class="float-right app-header-info">
+     <!-- <AutoComplete :showDropdownWhenNoResult="false" v-model="searchText" config="globalSearch" placeholder="全局搜索.."></AutoComplete> -->
       <div class="app-header-icon-item" v-tooltip content="系统布局配置" theme="white" @click="showSettingModal">
         <i class="icon-content-left"></i>
       </div>
-      <appHeaderMessage></appHeaderMessage>
+     <!-- <appHeaderMessage></appHeaderMessage> -->
       <div class="app-header-icon-item" v-tooltip content="GitHub" theme="white" @click="goGithub">
         <i class="h-icon-github"></i>
       </div>
@@ -102,18 +104,18 @@
         <i class="h-icon-help"></i>
       </div>
       <DropdownMenu className="app-header-dropdown" trigger="hover" offset="0,5" :width="150" placement="bottom-end" :datas="infoMenu" @onclick="trigger">
-        <Avatar :src="User.avatar" :width="30"><span>{{User.name}}</span></Avatar>
+        <!-- <Avatar :src="User.avatar" :width="30"><span>{{User.name}}</span></Avatar> -->
       </DropdownMenu>
     </div>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import appHeaderMessage from './modules/app-header-message';
+// import { mapState } from 'vuex';
+// import appHeaderMessage from './modules/app-header-message';
 
 export default {
   components: {
-    appHeaderMessage
+    // appHeaderMessage
   },
   data() {
     return {
@@ -124,39 +126,39 @@ export default {
       ]
     };
   },
-  computed: {
-    ...mapState(['User']),
-    siderCollapsed: {
-      get() {
-        return this.$store.state.siderCollapsed;
-      },
-      set(value) {
-        this.$store.commit('updateSiderCollapse', value);
-      }
-    }
-  },
+  // computed: {
+  //   ...mapState(['User']),
+  //   siderCollapsed: {
+  //     get() {
+  //       return this.$store.state.siderCollapsed;
+  //     },
+  //     set(value) {
+  //       this.$store.commit('updateSiderCollapse', value);
+  //     }
+  //   }
+  // },
   mounted() {
-    this.listenResize();
+    //this.listenResize();
   },
   methods: {
-    listenResize() {
-      let windowWidth = window.innerWidth;
-      const resizeEvent = window.addEventListener('resize', () => {
-        if (windowWidth == window.innerWidth) {
-          return;
-        }
-        if (this.siderCollapsed && window.innerWidth > 900) {
-          this.siderCollapsed = false;
-        } else if (!this.siderCollapsed && window.innerWidth < 900) {
-          this.siderCollapsed = true;
-        }
-        windowWidth = window.innerWidth;
-      });
-      this.$once('hook:beforeDestroy', () => {
-        window.removeEventListener('resize', resizeEvent);
-      });
-      window.dispatchEvent(new Event('resize'));
-    },
+  //   listenResize() {
+  //     let windowWidth = window.innerWidth;
+  //     const resizeEvent = window.addEventListener('resize', () => {
+  //       if (windowWidth == window.innerWidth) {
+  //         return;
+  //       }
+  //       if (this.siderCollapsed && window.innerWidth > 900) {
+  //         this.siderCollapsed = false;
+  //       } else if (!this.siderCollapsed && window.innerWidth < 900) {
+  //         this.siderCollapsed = true;
+  //       }
+  //       windowWidth = window.innerWidth;
+  //     });
+  //     this.$once('hook:beforeDestroy', () => {
+  //       window.removeEventListener('resize', resizeEvent);
+  //     });
+  //     window.dispatchEvent(new Event('resize'));
+  //   },
     goGithub() {
       window.open('https://github.com/heyui/heyui-admin');
     },
@@ -164,15 +166,15 @@ export default {
       window.open('https://heyui.github.io/heyui-admin-docs');
     },
     trigger(data) {
-      if (data == 'logout') {
-        Utils.removeLocal('token');
-        this.$router.replace({ name: 'Login' });
-      } else {
-        this.$router.push({ name: 'AccountBasic' });
-      }
+      // if (data == 'logout') {
+      //   Utils.removeLocal('token');
+      //   this.$router.replace({ name: 'Login' });
+      // } else {
+      //   this.$router.push({ name: 'AccountBasic' });
+      // }
     },
     showSettingModal() {
-      this.$emit('openSetting');
+      // this.$emit('openSetting');
     }
   }
 };

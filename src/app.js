@@ -11,6 +11,7 @@ import Main from 'components/app/app-frame'
 
 // import routerConfig from 'js/config/router-config';
 import VueRouter from 'vue-router';
+import vueResource from "vue-resource"
 require('./css/app.less');
 
 // 开发环境判断
@@ -24,6 +25,7 @@ require('./css/app.less');
 Vue.use(HeyUI);
 Vue.use(VueRouter);
 Vue.use(animated);
+Vue.use(vueResource);
 // const router = routerConfig();
 var router = new VueRouter({
 	routes: [{

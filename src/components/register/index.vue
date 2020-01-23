@@ -343,8 +343,6 @@ export default {
         this.userNameObj.style.shake = true;
         if (this.register.username == null || this.register.username == "")
           this.userNameObj.errorMsg = "用户名不能为空";
-        if (this.register.username == "5724924")
-          this.userNameObj.errorMsg = "用户名已存在";
       }
     },
     checkPsw() {
@@ -361,8 +359,6 @@ export default {
       }
     },
     checkRePsw() {
-      if(this.register.repassword==null)
-        return;
       if (this.register.repassword != this.register.password) {
         this.repasswordObj.errorMsg = "两次密码不一致";
         this.repasswordObj.style.shake = true;

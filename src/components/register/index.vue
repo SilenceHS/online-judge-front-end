@@ -127,6 +127,7 @@
     <div class="login-container">
       <div class="login-content">
         <div class="login-title">快速注册</div>
+
         <div :class="userNameObj.style">
           <input
             type="text"
@@ -213,6 +214,9 @@
           </transition>
         </div>
 
+        <div style="color: #7e7e7e">
+          <Radio v-model="type" :datas="param"></Radio>
+        </div>
         <div class="buttonDiv">
           <Button :loading="loading" block color="primary" size="l" @click="submit">注册</Button>
         </div>
@@ -230,10 +234,12 @@
 </template>
 <script>
 import Register from "model/register/Register";
-
+import md5 from "js-md5";
 export default {
   data() {
     return {
+      type: "学生",
+      param: ["学生", "教师"],
       emailObj: {
         style: {
           "login-name": true,
@@ -282,6 +288,37 @@ export default {
       var c = this.checkPsw();
       var d = this.checkRePsw();
       if (a && b && c && d) {
+        var self = this;
+        this.$http
+          .post("http://127.0.0.1:8000/api/register/", {
+            
+              username: self.register.username,
+              email: self.register.email,
+              password: md5(self.register.password),
+              type:self.type
+          },{emulateJSON:true})
+          .then(
+            response => {
+              if (response.body.status == "200") {
+                this.$Message["success"](`注册成功！`);
+                // setTimeout(() => {
+                //   this.$router.push("/");
+                // }, 500);
+              } else {
+                if(response.body.error.username=="0"){
+                  self.userNameObj.style.shake = true;
+                  self.userNameObj.errorMsg = "用户名已存在";
+                }
+                if(response.body.error.email=="0"){
+                  self.emailObj.style.shake = true;
+                  self.emailObj.errorMsg = "邮箱已存在";
+                }
+              }
+            },
+            response => {
+              alert("服务器维护中");
+            }
+          );
       }
     },
     checkEmail() {
@@ -324,6 +361,8 @@ export default {
       }
     },
     checkRePsw() {
+      if(this.register.repassword==null)
+        return;
       if (this.register.repassword != this.register.password) {
         this.repasswordObj.errorMsg = "两次密码不一致";
         this.repasswordObj.style.shake = true;

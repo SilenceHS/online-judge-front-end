@@ -43,6 +43,10 @@ var router = new VueRouter({
 			path: '/register',
 			component: (resolve) => require(['components/register/index'], resolve),
 		},
+		{
+			path: '/active',
+			component: (resolve) => require(['components/active/index'], resolve),
+		},
 
 
 

@@ -289,9 +289,9 @@ export default {
       var d = this.checkRePsw();
       if (a && b && c && d) {
         var self = this;
+        self.$Loading('注册中，请稍等.');
         this.$http
           .post("http://127.0.0.1:8000/api/register/", {
-            
               username: self.register.username,
               email: self.register.email,
               password: md5(self.register.password),
@@ -299,12 +299,15 @@ export default {
           },{emulateJSON:true})
           .then(
             response => {
+              self.$Loading.close();
               if (response.body.status == "200") {
-                this.$Message["success"](`注册成功！`);
-                // setTimeout(() => {
-                //   this.$router.push("/");
-                // }, 500);
-              } else {
+                this.$Message["success"](`提交成功！点击邮箱内链接以完成注册！`);
+              } 
+              else if(response.body.status == "500")
+              {
+                alert('服务器连接失败')
+              }
+              else {
                 if(response.body.error.username=="0"){
                   self.userNameObj.style.shake = true;
                   self.userNameObj.errorMsg = "用户名已存在";
@@ -316,6 +319,7 @@ export default {
               }
             },
             response => {
+              self.$Loading.close();
               alert("服务器维护中");
             }
           );

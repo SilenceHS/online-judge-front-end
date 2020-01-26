@@ -178,7 +178,7 @@
             @keyup.enter="submit"
             autocomplete="off"
             @focus="clearError('passwordObj'),clearError('repasswordObj')"
-            @blur="checkPsw(),checkRePsw()"
+            @blur="checkPsw()"
           />
           <span
             class="placeholder"
@@ -339,14 +339,13 @@ export default {
       }
     },
     checkUserName() {
-      if (this.register.username && this.register.username != "5724924") {
+      if (this.register.username) {
         this.userNameObj.errorMsg = "";
         this.userNameObj.style.shake = false;
         return true;
       } else {
         this.userNameObj.style.shake = true;
-        if (this.register.username == null || this.register.username == "")
-          this.userNameObj.errorMsg = "用户名不能为空";
+        this.userNameObj.errorMsg = "用户名不能为空";
       }
     },
     checkPsw() {

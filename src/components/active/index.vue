@@ -12,11 +12,15 @@
     <p>{{msg}}</p>
      <Button color="primary" size="l" @click="login">返回登录</Button>
   </div>
+   <HFooter>
+        <appFooter></appFooter>
+    </HFooter>
  
 </div>
 </template>
 
 <script>
+import appFooter from 'components/app/app-footer';
 export default {
   data(){
     return {
@@ -48,6 +52,9 @@ export default {
           }
         );
     this.$Loading.close();
+  },
+   components: {
+    appFooter
   }
   
 };

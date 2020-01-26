@@ -104,13 +104,13 @@
         <i class="h-icon-help"></i>
       </div>
       <DropdownMenu className="app-header-dropdown" trigger="hover" offset="0,5" :width="150" placement="bottom-end" :datas="infoMenu" @onclick="trigger">
-        <!-- <Avatar :src="User.avatar" :width="30"><span>{{User.name}}</span></Avatar> -->
+        <Avatar :src="User.avatar_url" :width="30"><span>{{User.username}}</span></Avatar>
       </DropdownMenu>
     </div>
   </div>
 </template>
 <script>
-// import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 // import appHeaderMessage from './modules/app-header-message';
 
 export default {
@@ -126,8 +126,8 @@ export default {
       ]
     };
   },
-  // computed: {
-  //   ...mapState(['User']),
+   computed: {
+     ...mapState(['User']),
   //   siderCollapsed: {
   //     get() {
   //       return this.$store.state.siderCollapsed;
@@ -136,7 +136,7 @@ export default {
   //       this.$store.commit('updateSiderCollapse', value);
   //     }
   //   }
-  // },
+   },
   mounted() {
     //this.listenResize();
   },

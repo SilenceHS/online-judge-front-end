@@ -12,6 +12,7 @@ import Main from 'components/app/app-frame'
 // import routerConfig from 'js/config/router-config';
 import VueRouter from 'vue-router';
 import vueResource from "vue-resource"
+import store from 'js/vuex/store';
 require('./css/app.less');
 
 // 开发环境判断
@@ -54,5 +55,6 @@ var router = new VueRouter({
 })
 export default new Vue({
 	router,
+	store,
 	render: h => h(App)
 }).$mount('#app');

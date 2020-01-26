@@ -189,6 +189,7 @@
 <script>
 import Login from "model/login/Login";
 import md5 from "js-md5";
+import store from 'js/vuex/store';
 export default {
   data() {
     return {
@@ -232,6 +233,7 @@ export default {
           response => {
             if (response.body.status == "200") {
               this.$Message["success"](`登录成功！`);
+              store.dispatch('updateAccount', response.body.user);
               setTimeout(() => {
                 this.$router.push("/");
               }, 500);

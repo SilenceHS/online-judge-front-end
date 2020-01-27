@@ -119,6 +119,7 @@ export default {
   },
   data() {
     return {
+      User:null,
       searchText: '',
       infoMenu: [
         { key: 'info', title: '个人信息', icon: 'h-icon-user' },
@@ -127,7 +128,7 @@ export default {
     };
   },
    computed: {
-     ...mapState(['User']),
+    // ...mapState(['User']),
   //   siderCollapsed: {
   //     get() {
   //       return this.$store.state.siderCollapsed;
@@ -137,8 +138,15 @@ export default {
   //     }
   //   }
    },
-  mounted() {
-    //this.listenResize();
+  // mounted() {
+    
+    
+  //   //this.listenResize();
+  // },
+  beforeMount(){
+    this.User=JSON.parse(localStorage.getItem('User'));
+    if (this.User==null)
+      this.$router.replace("/login");
   },
   methods: {
   //   listenResize() {
@@ -166,10 +174,12 @@ export default {
       window.open('https://heyui.github.io/heyui-admin-docs');
     },
     trigger(data) {
-      // if (data == 'logout') {
+       if (data == 'logout') {
       //   Utils.removeLocal('token');
       //   this.$router.replace({ name: 'Login' });
-      // } else {
+        localStorage.clear();
+        this.$router.replace("/login");
+       } //else {
       //   this.$router.push({ name: 'AccountBasic' });
       // }
     },

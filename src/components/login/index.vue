@@ -233,7 +233,7 @@ export default {
           response => {
             if (response.body.status == "200") {
               this.$Message["success"](`登录成功！`);
-              store.dispatch('updateAccount', response.body.user);
+              localStorage.setItem('User', JSON.stringify(response.body.user));
               setTimeout(() => {
                 this.$router.push("/");
               }, 500);

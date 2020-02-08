@@ -8,6 +8,7 @@
   overflow: hidden;
   white-space: nowrap;
   transition: padding .3s;
+  display:inline-block; 
   .app-logo-text {
     font-size: 20px;
     vertical-align: middle;

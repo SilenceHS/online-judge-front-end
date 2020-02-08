@@ -2,13 +2,13 @@
 </style>
 <template>
   <div>
-    <Layout class="app-frame" v-if="!loading" :siderCollapsed="siderCollapsed" :siderFixed="layoutConfig.siderFixed">
-      <Sider :theme="layoutConfig.siderTheme">
+    <Layout class="app-frame" v-if="!loading">
+      <!-- <Sider :theme="layoutConfig.siderTheme">
         <appMenu :theme="layoutConfig.siderTheme"></appMenu>
-      </Sider>
-      <Layout :headerFixed="layoutConfig.headerFixed">
+      </Sider> -->
+      <Layout :headerFixed="true">
         <HHeader theme="white">
-          <appHead @openSetting="openSetting=true" :layoutConfig="layoutConfig"></appHead>
+           <appHead></appHead>
         </HHeader>
         <!-- <SysTabs v-if="layoutConfig.showSystab" homePage="Home"></SysTabs> -->
         <Content>
@@ -68,6 +68,13 @@ export default {
     // this.$once('hook:beforeDestroy', function () {
     //   G.removelistener(listener);
     // });
+  },
+    beforeMount(){
+    this.User=JSON.parse(localStorage.getItem('User'));
+    if (this.User==null)
+      this.$router.replace("/login");
+    else
+      this.loading=false
   },
   methods: {
     // init() {

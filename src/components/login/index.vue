@@ -189,7 +189,7 @@
 <script>
 import Login from "model/login/Login";
 import md5 from "js-md5";
-import store from 'js/vuex/store';
+import store from "js/vuex/store";
 export default {
   data() {
     return {
@@ -232,11 +232,10 @@ export default {
         .then(
           response => {
             if (response.body.status == "200") {
-              this.$Message["success"](`登录成功！`);
-              localStorage.setItem('User', JSON.stringify(response.body.user));
+              localStorage.setItem("User", JSON.stringify(response.body.user));
               setTimeout(() => {
                 this.$router.push("/");
-              }, 500);
+              }, 300);
             } else {
               this.passwordObj.style.shake = false;
               this.passwordObj.errorMsg = "用户名或密码错误";

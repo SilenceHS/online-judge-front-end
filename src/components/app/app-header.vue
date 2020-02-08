@@ -89,10 +89,11 @@
 <template>
   <div class="app-header">
     <!-- <div style="width:50px;float:left;"><Button :icon="siderCollapsed ? 'icon-align-right':'icon-align-left'" size="l" noBorder class="font20" @click="siderCollapsed=!siderCollapsed"></Button></div> -->
-    <div style="width:50px;float:left;"><Button :icon="'icon-align-right'" size="l" noBorder class="font20"></Button></div>
-    
-	<div class="float-right app-header-info">
+    <!-- <div style="width:50px;float:left;"><Button :icon="'icon-align-right'" size="l" noBorder class="font20" @click="siderCollapsed=!siderCollapsed"></Button></div> -->
+	  
+    <div class="float-right app-header-info">
      <!-- <AutoComplete :showDropdownWhenNoResult="false" v-model="searchText" config="globalSearch" placeholder="全局搜索.."></AutoComplete> -->
+       
       <div class="app-header-icon-item" v-tooltip content="系统布局配置" theme="white" @click="showSettingModal">
         <i class="icon-content-left"></i>
       </div>
@@ -107,10 +108,33 @@
         <Avatar :src="User.avatar_url" :width="30"><span>{{User.username}}</span></Avatar>
       </DropdownMenu>
     </div>
+    
+    <div >
+      <appLogo style="float:left;"></appLogo>
+      <div class="app-header-info">
+      <div class="app-header-icon-item" v-tooltip content="官方题库" theme="white" @click="showSettingModal">
+        <i class="icon-book"><b style="font-size:16px;">官方题库</b></i>
+        
+        
+        
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="课程题库" theme="white" @click="showSettingModal">
+        <i class="icon-align-left"><b style="font-size:16px;">课程题库</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
+        <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
+        <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
+      </div>
+      </div>
+    </div>
+    
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import appLogo from './app-logo';
 // import appHeaderMessage from './modules/app-header-message';
 
 export default {
@@ -120,6 +144,7 @@ export default {
   data() {
     return {
       User:null,
+      siderCollapsed:false,
       searchText: '',
       infoMenu: [
         { key: 'info', title: '个人信息', icon: 'h-icon-user' },
@@ -186,6 +211,9 @@ export default {
     showSettingModal() {
       // this.$emit('openSetting');
     }
+  },
+  components: {
+    appLogo
   }
 };
 </script>

@@ -112,7 +112,7 @@
     <div >
       <appLogo style="float:left;"></appLogo>
       <div class="app-header-info">
-      <div class="app-header-icon-item" v-tooltip content="官方题库" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="官方题库" theme="white" @click="officialList">
         <i class="icon-book"><b style="font-size:16px;">官方题库</b></i>
         
         
@@ -210,7 +210,11 @@ export default {
     },
     showSettingModal() {
       // this.$emit('openSetting');
+    },
+    officialList() {
+      this.$router.push("list")
     }
+
   },
   components: {
     appLogo

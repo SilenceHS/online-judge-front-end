@@ -36,7 +36,12 @@ var router = new VueRouter({
 				path: '',
 				name: 'Home',
 				component: (resolve) => require(['components/main/mainpage'], resolve)
+				},
+				{
+					path: 'list',
+					component: (resolve) => require(['components/list/list'], resolve)
 				}
+
 			]
 		},
 		{

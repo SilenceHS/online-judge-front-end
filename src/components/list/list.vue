@@ -196,94 +196,94 @@ export default {
       //     }
       //   ],
       datas: [
-        {
-          status: "AC",
-          id: 1,
-          name: "两数之和",
-          solve: 12,
-          percent: "1%",
-          level: "简单"
-        },
-        {
-          status: "",
-          id: 2,
-          name: "两数相加",
-          solve: 13,
-          percent: "2%",
-          level: "普通"
-        },
-        {
-          status: "",
-          id: 3,
-          name: "无重复字符的最长子串",
-          solve: 14,
-          percent: "1%",
-          level: "简单"
-        },
-        {
-          status: "AC",
-          id: 4,
-          name: "寻找两个有序数组的中位数",
-          solve: 15,
-          percent: "1%",
-          level: "普通"
-        },
-        {
-          status: "",
-          id: 5,
-          name: "最长回文子串",
-          solve: 16,
-          percent: "1%",
-          level: "简单"
-        },
-        {
-          status: "AC",
-          id: 6,
-          name: "Z 字形变换",
-          solve: 17,
-          percent: "1%",
-          level: "简单"
-        },
-        {
-          status: "AC",
-          id: 7,
-          name: "整数反转",
-          solve: 12,
-          percent: "1%",
-          level: "简单"
-        },
-        {
-          status: "AC",
-          id: 8,
-          name: "字符串转换整数 (atoi)",
-          solve: 15,
-          percent: "1%",
-          level: "困难"
-        },
-        {
-          status: "",
-          id: 8,
-          name: "回文数",
-          solve: 14,
-          percent: "1%",
-          level: "简单"
-        },
-        {
-          status: "AC",
-          id: 10,
-          name: "正则表达式匹配",
-          solve: 17,
-          percent: "1%",
-          level: "困难"
-        },
-        {
-          status: "",
-          id: 11,
-          name: "盛最多水的容器",
-          solve: 11,
-          percent: "1%",
-          level: "简单"
-        }
+        // {
+        //   status: "AC",
+        //   id: 1,
+        //   name: "两数之和",
+        //   solve: 12,
+        //   percent: "1%",
+        //   level: "简单"
+        // },
+        // {
+        //   status: "",
+        //   id: 2,
+        //   name: "两数相加",
+        //   solve: 13,
+        //   percent: "2%",
+        //   level: "普通"
+        // },
+        // {
+        //   status: "",
+        //   id: 3,
+        //   name: "无重复字符的最长子串",
+        //   solve: 14,
+        //   percent: "1%",
+        //   level: "简单"
+        // },
+        // {
+        //   status: "AC",
+        //   id: 4,
+        //   name: "寻找两个有序数组的中位数",
+        //   solve: 15,
+        //   percent: "1%",
+        //   level: "普通"
+        // },
+        // {
+        //   status: "",
+        //   id: 5,
+        //   name: "最长回文子串",
+        //   solve: 16,
+        //   percent: "1%",
+        //   level: "简单"
+        // },
+        // {
+        //   status: "AC",
+        //   id: 6,
+        //   name: "Z 字形变换",
+        //   solve: 17,
+        //   percent: "1%",
+        //   level: "简单"
+        // },
+        // {
+        //   status: "AC",
+        //   id: 7,
+        //   name: "整数反转",
+        //   solve: 12,
+        //   percent: "1%",
+        //   level: "简单"
+        // },
+        // {
+        //   status: "AC",
+        //   id: 8,
+        //   name: "字符串转换整数 (atoi)",
+        //   solve: 15,
+        //   percent: "1%",
+        //   level: "困难"
+        // },
+        // {
+        //   status: "",
+        //   id: 8,
+        //   name: "回文数",
+        //   solve: 14,
+        //   percent: "1%",
+        //   level: "简单"
+        // },
+        // {
+        //   status: "AC",
+        //   id: 10,
+        //   name: "正则表达式匹配",
+        //   solve: 17,
+        //   percent: "1%",
+        //   level: "困难"
+        // },
+        // {
+        //   status: "",
+        //   id: 11,
+        //   name: "盛最多水的容器",
+        //   solve: 11,
+        //   percent: "1%",
+        //   level: "简单"
+        // }
       ]
     };
   },
@@ -293,7 +293,27 @@ export default {
     },
     messageRender(data, index) {
       return 'style="color: #ff0;"';
-    }
-  }
+    },
+  },
+  mounted: function() {
+    this.$Loading('加载中~~');
+    var self=this
+    var user=JSON.parse(localStorage.getItem('User'));
+    this.$http
+        .get("http://127.0.0.1:8000/api/getquizlist/"+self.$route.query.key+"/"+user.username)
+        .then(
+          response => {
+            if (response.body.status == "200") {
+             self.datas=response.body.quizlist
+            } else {
+             self.msg="激活失败~~\n重复激活或激活链接已失效"
+            }
+          },
+          response => {
+            alert("服务器维护中");
+          }
+        );
+    this.$Loading.close();
+  },
 };
 </script>

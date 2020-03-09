@@ -1,4 +1,5 @@
 <style lang='less'>
+
 .app-home-vue {
   .home-part-body {
     height: 350px;
@@ -30,6 +31,8 @@
   }
 }
 </style>
+
+
 <template>
   <div class="app-home-vue frame-page">
     <Row :space="30">
@@ -46,6 +49,81 @@
         </div>
       </Cell>
       <Cell :xs='24' :sm='24' :md='24' :lg='8' :xl='8'>
+        <div class="h-panel">
+          <div class="h-panel-bar">
+            <div class="h-panel-title">答题统计</div>
+            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
+          </div>
+          <div class="h-panel-body progress-div home-part-body">
+            <p><Progress :percent="99" color="green"><span slot="title">AC</span><span slot="text">4个</span></Progress></p>
+            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">0个</span></Progress></p>
+          </div>
+        </div>
+      </Cell>
+       <Cell :xs='24' :sm='24' :md='24' :lg='8' :xl='8'>
+        <div class="h-panel">
+          <div class="h-panel-bar">
+            <div class="h-panel-title">答题统计</div>
+            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
+          </div>
+          <div class="h-panel-body progress-div home-part-body">
+            <p><Progress :percent="99" color="green"><span slot="title">AC</span><span slot="text">4个</span></Progress></p>
+            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">0个</span></Progress></p>
+          </div>
+        </div>
+      </Cell>
+       <Cell :xs='24' :sm='24' :md='24' :lg='8' :xl='8'>
+        <div class="h-panel">
+          <div class="h-panel-bar">
+            <div class="h-panel-title">答题统计</div>
+            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
+          </div>
+          <div class="h-panel-body progress-div home-part-body">
+            <p><Progress :percent="99" color="green"><span slot="title">AC</span><span slot="text">4个</span></Progress></p>
+            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">0个</span></Progress></p>
+          </div>
+        </div>
+      </Cell>
+       <Cell :xs='24' :sm='24' :md='24' :lg='8' :xl='8'>
+        <div class="h-panel">
+          <div class="h-panel-bar">
+            <div class="h-panel-title">答题统计</div>
+            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
+          </div>
+          <div class="h-panel-body progress-div home-part-body">
+            <p><Progress :percent="99" color="green"><span slot="title">AC</span><span slot="text">4个</span></Progress></p>
+            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">0个</span></Progress></p>
+          </div>
+        </div>
+      </Cell>
+       <Cell :xs='24' :sm='24' :md='24' :lg='8' :xl='8'>
+        <div class="h-panel">
+          <div class="h-panel-bar">
+            <div class="h-panel-title">答题统计</div>
+            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
+          </div>
+          <div class="h-panel-body progress-div home-part-body">
+            <p><Progress :percent="99" color="green"><span slot="title">AC</span><span slot="text">4个</span></Progress></p>
+            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">0个</span></Progress></p>
+            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">0个</span></Progress></p>
+          </div>
+        </div>
+      </Cell>
+       <Cell :xs='24' :sm='24' :md='24' :lg='8' :xl='8'>
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="h-panel-title">答题统计</div>
@@ -133,6 +211,11 @@ export default {
     openMore() {
       this.$router.push({ name: 'Chart' });
     }
-  }
+  },
+  beforeCreate(){
+    this.User=JSON.parse(localStorage.getItem('User'));
+    if (this.User==null)
+      this.$router.replace("/login");
+  },
 };
 </script>

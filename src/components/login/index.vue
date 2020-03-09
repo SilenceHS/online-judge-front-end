@@ -5,6 +5,7 @@
 @text-color: #7e7e7e;
 @placeholder-color: #7e7e7e;
 .login-vue {
+  
   text-align: center;
   position: absolute;
   top: 0;
@@ -121,6 +122,13 @@
 .fadeOut {
   animation-duration: 0.2s;
 }
+
+</style>
+
+<style>
+
+body{ overflow-x:scroll  ;overflow-y:scroll  ;}
+
 </style>
 
 <template>

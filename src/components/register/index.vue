@@ -1,10 +1,12 @@
 <style lang="less">
+
 @gradient-color: #3788ee;
 @bg-color: #f7f8fa;
 @title-color: #3a3a3a;
 @text-color: #7e7e7e;
 @placeholder-color: #7e7e7e;
 .login-vue {
+  
   text-align: center;
   position: absolute;
   top: 0;
@@ -113,7 +115,9 @@
     }
   }
 }
+
 </style>
+
 <style scoped>
 .fadeIn {
   animation-duration: 0.2s;
@@ -121,7 +125,11 @@
 .fadeOut {
   animation-duration: 0.2s;
 }
+
 </style>
+
+
+
 <template>
   <div class="login-vue">
     <div class="login-container">

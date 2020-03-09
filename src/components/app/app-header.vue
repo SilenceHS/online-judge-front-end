@@ -212,7 +212,7 @@ export default {
       // this.$emit('openSetting');
     },
     officialList() {
-      this.$router.push("/list/?key=0")
+      this.$router.push("/list/?list=0")
     }
 
   },

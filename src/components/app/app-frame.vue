@@ -69,13 +69,13 @@ export default {
     //   G.removelistener(listener);
     // });
   },
-    beforeMount(){
-    this.User=JSON.parse(localStorage.getItem('User'));
-    if (this.User==null)
-      this.$router.replace("/login");
-    else
-      this.loading=false
-  },
+  //   beforeMount(){
+  //   this.User=JSON.parse(localStorage.getItem('User'));
+  //   if (this.User==null)
+  //     this.$router.replace("/login");
+  //   else
+  //     this.loading=false
+  // },
   methods: {
     // init() {
     //   this.$Loading('加载中');

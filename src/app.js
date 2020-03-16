@@ -8,6 +8,9 @@ import Login from 'components/login/index';
 import Register from 'components/register/index';
 import animated from 'animate.css'
 import Main from 'components/app/app-frame'
+import VueCodeMirror from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+
 
 // import routerConfig from 'js/config/router-config';
 import VueRouter from 'vue-router';
@@ -26,6 +29,7 @@ Vue.use(HeyUI);
 Vue.use(VueRouter);
 Vue.use(animated);
 Vue.use(vueResource);
+Vue.use(VueCodeMirror)
 // const router = routerConfig();
 var router = new VueRouter({
 	routes: [{

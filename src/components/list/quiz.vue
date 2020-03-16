@@ -1,5 +1,9 @@
 <style lang='less'>
-.divcenter{text-align:center;font-size: 180%;border-bottom: solid 2px #eee;} 
+.divcenter {
+  text-align: center;
+  font-size: 180%;
+  border-bottom: solid 2px #eee;
+}
 .app-home-vue {
   .home-part-body {
     height: 350px;
@@ -39,62 +43,38 @@
 </style>
 <template>
   <div class="app-home-vue frame-page">
-     <Row :space="30">
-      <Cell :xs="18" :sm="18" :md="18" :lg="17" :xl="17">
+    <Row :space="30">
+      <Cell :xs="25" :sm="25" :md="14" :lg="12" :xl="14">
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="divcenter">{{datas.name}}</div>
             <div style="text-align:center;border-bottom: solid 2px #eee;line-height: 2.5em;">
-                <span style="font-size: 16px;color: green;">
-                    时间限制
-                </span>
-                <span style="font-size: 17px;">
-                :1000ms&ensp;
-                </span>
-                <span style="font-size: 16px;color: green;">               
-                    内存限制
-                </span>
-                 <span style="font-size: 17px;">
-                :65536KB
-                 </span>
+              <span style="font-size: 16px;color: green;">时间限制</span>
+              <span style="font-size: 17px;">:{{datas.timelimit}}ms&ensp;</span>
+              <span style="font-size: 16px;color: green;">内存限制</span>
+              <span style="font-size: 17px;">:{{datas.memorylimit}}KB</span>
             </div>
-            <div style="font-size: 180%;line-height: 2.5em;">
-                题目描述
-            </div>
-            <div style="font-size: 16px;">
-                {{datas.description}}
-            </div>
-             <div style="font-size: 180%;line-height: 2.5em;">
-                输入规则
-            </div>
-            <div style="font-size: 16px;">
-                {{datas.input}}
-            </div>
-            <div style="font-size: 180%;line-height: 2.5em;">
-                输出规则
-            </div>
-            <div style="font-size: 16px;">
-                {{datas.output}}
-            </div>
+            <div style="font-size: 180%;line-height: 2.5em;">题目描述</div>
+            <div style="font-size: 16px;">{{datas.description}}</div>
+            <div style="font-size: 180%;line-height: 2.5em;">输入规则</div>
+            <div style="font-size: 16px;">{{datas.input}}</div>
+            <div style="font-size: 180%;line-height: 2.5em;">输出规则</div>
+            <div style="font-size: 16px;">{{datas.output}}</div>
 
-            <div style="font-size: 180%;line-height: 2.5em;">
-                输入样例
-            </div>
-            <div style="font-size: 16px;">
-                {{datas.sampleinput}}
-            </div>
-            <div style="font-size: 180%;line-height: 2.5em;">
-                输出样例
-            </div>
-            <div style="font-size: 16px;">
-                {{datas.sampleoutput}}
-            </div>
-
-            
+            <div style="font-size: 180%;line-height: 2.5em;">输入样例</div>
+            <div style="font-size: 16px;">{{datas.sampleinput}}</div>
+            <div style="font-size: 180%;line-height: 2.5em;">输出样例</div>
+            <div style="font-size: 16px;">{{datas.sampleoutput}}</div>
           </div>
-          <div>
-           
+          <div></div>
+        </div>
+      </Cell>
+      <Cell :xs="25" :sm="25" :md="10" :lg="12" :xl="10">
+        <div class="h-panel">
+          <div class="h-panel-bar">
+         <textarea ref="mycode" class="codesql public_text" v-model="code"></textarea>
           </div>
+          <div></div>
         </div>
       </Cell>
     </Row>
@@ -104,6 +84,9 @@
 import data1 from "js/datas/data1";
 import data2 from "js/datas/data2";
 import data3 from "js/datas/data4";
+import CodeMirror from 'codemirror/lib/codemirror'
+import "codemirror/theme/ambiance.css";
+require("codemirror/mode/javascript/javascript");
 
 export default {
   data() {
@@ -114,8 +97,9 @@ export default {
       checkbox: false,
       serial: true,
       loading: false,
-      datas: [
-      ]
+      datas: [],
+      code:"#include<iostream>\nusing namespace std;\nint main(){\nint a=0;\nint n;\ncin>>n;\ncout<<n;\nreturn 0;\n}"
+
     };
   },
   methods: {
@@ -125,30 +109,49 @@ export default {
     messageRender(data, index) {
       return 'style="color: #ff0;"';
     },
+  changeCode(value){
+  this.code = value;       
+  this.editor.setValue(this.code);
+}
   },
   mounted: function() {
-    this.$Loading('加载中~~');
-    var self=this
-    var user=JSON.parse(localStorage.getItem('User'));
+    this.editor = CodeMirror.fromTextArea(this.$refs.mycode, {
+      mode:"text/javascript",
+      theme: "ambiance",
+      readOnly:false,
+    })
+
+    this.$Loading("加载中~~");
+    var self = this;
+    var user = JSON.parse(localStorage.getItem("User"));
     this.$http
-        .get("http://127.0.0.1:8000/api/getquiz/"+self.$route.query.list+"/"+self.$route.query.quiz+"/"+user.username)
-        .then(
-          response => {
-            if (response.body.status == "200") {
-             self.datas=response.body.quiz[0].fields
-             console.log( self.datas)
-             this.$Loading.close();
-            } else {
-             self.msg="404"
-             this.$Loading.close();
-            }
-          },
-          response => {
-            alert("服务器维护中");
+      .get(
+        "http://127.0.0.1:8000/api/getquiz/" +
+          self.$route.query.list +
+          "/" +
+          self.$route.query.quiz +
+          "/" +
+          user.username
+      )
+      .then(
+        response => {
+          if (response.body.status == "200") {
+            self.datas = response.body.quiz[0].fields;
+            console.log(self.datas);
+            this.$Loading.close();
+          } else {
+            self.msg = "404";
             this.$Loading.close();
           }
-        );
-    
+        },
+        response => {
+          alert("服务器维护中");
+          this.$Loading.close();
+        }
+      );
   },
+//   components:{
+//       codemirror
+//  },
 };
 </script>

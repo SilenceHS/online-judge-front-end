@@ -67,7 +67,11 @@
               </TableItem>
               <TableItem title="题名">
                 <template slot-scope="{data}">
-                  <router-link class="body-text" style="color:#3787C6" :to="{path:'/quiz/?quiz='+data.url+'&list='+listId}">{{data.name}}</router-link>
+                  <router-link
+                    class="body-text"
+                    style="color:#3787C6"
+                    :to="{path:'/quiz/?quiz='+data.url+'&list='+listId}"
+                  >{{data.name}}</router-link>
                 </template>
               </TableItem>
               <TableItem title="解题人数" align="center" :width="100">
@@ -95,7 +99,13 @@
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="h-panel-title">完成情况</div>
-             <div class="h-panel-right"><span class="gray-color">当前排名</span><i class="h-split"></i><span class="font20 primary-color">1</span><i class="h-split"></i><span class="gray-color"></span></div>
+            <div class="h-panel-right">
+              <span class="gray-color">当前排名</span>
+              <i class="h-split"></i>
+              <span class="font20 primary-color">1</span>
+              <i class="h-split"></i>
+              <span class="gray-color"></span>
+            </div>
           </div>
           <div class="h-panel-body">
             <Row :space="20">
@@ -123,7 +133,7 @@
               <Cell :width="14">
                 <p class="gray-color">目前完成比例</p>
                 <p class="dark-color font22">122,332,98</p>
-              </Cell> -->
+              </Cell>-->
             </Row>
           </div>
         </div>
@@ -132,14 +142,38 @@
           <!-- <div class="h-panel-bar">
             <div class="h-panel-title">答题统计</div>
             <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
-          </div> -->
+          </div>-->
           <div class="h-panel-body progress-div">
-            <p><Progress :percent="99" color="green"><span slot="title">AC</span><span slot="text">6个</span></Progress></p>
-            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">5个</span></Progress></p>
-            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">2个</span></Progress></p>
-            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">4个</span></Progress></p>
-            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">3个</span></Progress></p>
-         
+            <p>
+              <Progress :percent="99" color="green">
+                <span slot="title">AC</span>
+                <span slot="text">6个</span>
+              </Progress>
+            </p>
+            <p>
+              <Progress :percent="88" color="blue">
+                <span slot="title">WA</span>
+                <span slot="text">5个</span>
+              </Progress>
+            </p>
+            <p>
+              <Progress :percent="55" color="red">
+                <span slot="title">CE</span>
+                <span slot="text">2个</span>
+              </Progress>
+            </p>
+            <p>
+              <Progress :percent="77" color="blue">
+                <span slot="title">PE</span>
+                <span slot="text">4个</span>
+              </Progress>
+            </p>
+            <p>
+              <Progress :percent="66" color="yellow">
+                <span slot="title">TLE</span>
+                <span slot="text">3个</span>
+              </Progress>
+            </p>
           </div>
         </div>
       </Cell>
@@ -160,10 +194,8 @@ export default {
       checkbox: false,
       serial: true,
       loading: false,
-      listId:0,
-      datas: [
-        
-      ]
+      listId: 0,
+      datas: []
     };
   },
   methods: {
@@ -172,32 +204,41 @@ export default {
     },
     messageRender(data, index) {
       return 'style="color: #ff0;"';
-    },
+    }
   },
   mounted: function() {
-    
-    this.$Loading('加载中~~');
-    var self=this
-    self.listId=self.$route.query.list
-    var user=JSON.parse(localStorage.getItem('User'));
+    this.$Loading("加载中~~");
+    var self = this;
+    self.listId = self.$route.query.list;
+    var user = JSON.parse(localStorage.getItem("User"));
     this.$http
-        .get("http://127.0.0.1:8000/api/getquizlist/"+self.listId+"/"+user.username)
-        .then(
-          response => {
-            if (response.body.status == "200") {
-             self.datas=response.body.quizlist
-             this.$Loading.close();
-            } else {
-             self.msg="激活失败~~\n重复激活或激活链接已失效"
-             this.$Loading.close();
-            }
-          },
-          response => {
-            alert("服务器维护中");
-            this.$Loading.close();
+      .get(
+        "http://127.0.0.1:8000/api/getquizlist/" +
+          self.listId +
+          "/" +
+          user.username
+      )
+      .then(
+        response => {
+          if (response.body.status == "200") {
+            self.datas = response.body.quizlist;
+             setTimeout(function() {
+              self.$Loading.close();
+            }, 500);
+          } else {
+            self.msg = "激活失败~~\n重复激活或激活链接已失效";
+            setTimeout(function() {
+              self.$Loading.close();
+            }, 500);
           }
-        );
-    
-  },
+        },
+        response => {
+          alert("服务器维护中");
+          setTimeout(function() {
+            self.$Loading.close();
+          }, 500);
+        }
+      );
+  }
 };
 </script>

@@ -80,17 +80,18 @@
               ref="mycode"
               class="codesql public_text code-mirror"
               v-model="mycode"
+              v-show="false"
             ></textarea>
             <p style="margin-top:10px;display: inline-block;">选择编程语言：</p>
             <div v-width="200" style="margin-top:10px;display: inline-block;">
-              <Select v-model="select" :datas="param" :deletable="false" @change="selectFn($event)"></Select>
+              <Select v-model="select" :datas="param" :deletable="false"></Select>
             </div>
 
             <button
               class="h-btn h-btn-text-blue h-btn-transparent;"
               style="margin-top:10px;float:right"
             >提交历史</button>
-            <Button color="blue" style="margin-top:10px;float:right;margin-right:10px">提交</Button>
+            <Button color="blue" style="margin-top:10px;float:right;margin-right:10px" @click="submit">提交</Button>
           </div>
           <div></div>
         </div>
@@ -121,59 +122,72 @@ require("codemirror/addon/selection/active-line.js");
 export default {
   data() {
     return {
-      show: false,
-      border: false,
-      stripe: true,
-      checkbox: false,
-      serial: true,
-      loading: false,
       datas: [],
-      mycode:
-        "#include<iostream>\nusing namespace std;\nint main(){\nint a=0;\nint n;\ncin>>n;\ncout<<n;\nreturn 0;\n}",
-      select: "python",
-      param: ["python", "text/x-c++src", "C", "C++"],
-      codestyle: "python"
-      // cmOptions:{
-      //   mode:"python",
-      //   theme: "mdn-like",
-      //   lineNumbers: true,
-      //   showCursorWhenSelecting:true,
-      //   readOnly:false,
-      //   matchBrackets:true,
-      //   autoCloseBrackets:true,
-      //   smartIndent: true,
-      //   styleActiveLine:true,
-      // }
+      mycode:"//TODO",
+      select: "Python3",
+      param: ["Python3", "Java", "C", "C++"],
     };
   },
   methods: {
-    openMore() {
-      this.$router.push({ name: "Chart" });
+    setSize(){
+      this.editor.setSize("auto", this.$refs.panel.clientHeight - 80 + "px");
     },
-    messageRender(data, index) {
-      return 'style="color: #ff0;"';
-    },
-    selectFn(e) {
-
-    },
-    
+    submit(){
+      var self=this
+      var usercode=this.editor.getValue()
+      var language=this.select
+      var username=JSON.parse(localStorage.getItem('User')).username
+      var quizurl=self.$route.query.quiz
+       this.$http
+          .post("http://127.0.0.1:8000/api/postquiz/", {
+              code: usercode,
+              language: language,
+              username: username,
+              quizurl:quizurl
+          },{emulateJSON:true})
+          .then(
+            response => {
+              self.$Loading.close();
+              if (response.body.status == "200") {
+                this.$Message["success"](`提交成功！正在判题中，请稍等`);
+              } 
+              else if(response.body.status == "500")
+              {
+                alert('服务器连接失败')
+              }
+              else {
+                
+              }
+            },
+            response => {
+              self.$Loading.close();
+              alert("服务器维护中");
+            })
+    }
   },
   updated: function() {
-    this.editor.setSize("auto", this.$refs.panel.clientHeight - 80 + "px");
+    
+    //alert("更新")
   },
   mounted: function() {
     var self = this;
-    this.editor = CodeMirror.fromTextArea(this.$refs.mycode, {
-      mode: self.codestyle,
-      theme: "mdn-like",
-      lineNumbers: true,
-      showCursorWhenSelecting: true,
-      readOnly: false,
-      matchBrackets: true,
-      autoCloseBrackets: true,
-      smartIndent: true,
-      styleActiveLine: true
-    });
+   
+    setTimeout(function() {
+      self.editor = CodeMirror.fromTextArea(self.$refs.mycode, {
+        mode: "python",
+        theme: "mdn-like",
+        lineNumbers: true,
+        showCursorWhenSelecting: true,
+        readOnly: false,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        smartIndent: true,
+        styleActiveLine: true,
+        indentUnit: 4
+      });
+      self.setSize()
+    }, 500);
+
     this.$Loading("加载中~~");
     var self = this;
     var user = JSON.parse(localStorage.getItem("User"));
@@ -203,8 +217,5 @@ export default {
         }
       );
   }
-  //   components:{
-  //       codemirror
-  //  },
 };
 </script>

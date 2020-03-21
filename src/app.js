@@ -15,6 +15,7 @@ import 'codemirror/lib/codemirror.css'
 // import routerConfig from 'js/config/router-config';
 import VueRouter from 'vue-router';
 import vueResource from "vue-resource"
+import Parms from "js/common/Parms"
 require('./css/app.less');
 
 // 开发环境判断
@@ -30,6 +31,7 @@ Vue.use(VueRouter);
 Vue.use(animated);
 Vue.use(vueResource);
 Vue.use(VueCodeMirror)
+Vue.prototype.Parms=Parms
 // const router = routerConfig();
 var router = new VueRouter({
 	routes: [{

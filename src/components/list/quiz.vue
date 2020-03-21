@@ -139,7 +139,7 @@ export default {
       var username=JSON.parse(localStorage.getItem('User')).username
       var quizurl=self.$route.query.quiz
        this.$http
-          .post("http://127.0.0.1:8000/api/postquiz/", {
+          .post("http://"+this.Parms.host+this.Parms.port+"/api/postquiz/", {
               code: usercode,
               language: language,
               username: username,
@@ -193,7 +193,7 @@ export default {
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
-        "http://127.0.0.1:8000/api/getquiz/" +
+        "http://"+this.Parms.host+this.Parms.port+"/api/getquiz/" +
           self.$route.query.list +
           "/" +
           self.$route.query.quiz +

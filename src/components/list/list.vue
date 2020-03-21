@@ -213,7 +213,7 @@ export default {
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
-        "http://127.0.0.1:8000/api/getquizlist/" +
+        "http://"+this.Parms.host+this.Parms.port+"/api/getquizlist/" +
           self.listId +
           "/" +
           user.username

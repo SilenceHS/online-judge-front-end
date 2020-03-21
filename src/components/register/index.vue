@@ -299,7 +299,7 @@ export default {
         var self = this;
         self.$Loading('注册中，请稍等.');
         this.$http
-          .post("http://127.0.0.1:8000/api/register/", {
+          .post("http://"+this.Parms.host+this.Parms.port+"/api/register/", {
               username: self.register.username,
               email: self.register.email,
               password: md5(self.register.password),

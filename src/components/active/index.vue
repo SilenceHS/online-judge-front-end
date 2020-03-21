@@ -38,7 +38,7 @@ export default {
     this.$Loading('加载中~~');
     var self=this
     this.$http
-        .get("http://127.0.0.1:8000/api/active/"+self.$route.query.key)
+        .get("http://"+this.Parms.host+this.Parms.port+"/api/active/"+self.$route.query.key)
         .then(
           response => {
             if (response.body.status == "200") {

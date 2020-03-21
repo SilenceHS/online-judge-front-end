@@ -231,7 +231,7 @@ export default {
       if (a == false || b == false) return;
       var self = this;
       this.$http
-        .get("http://127.0.0.1:8000/api/login/", {
+        .get("http://"+this.Parms.host+this.Parms.port+"/api/login/", {
           params: {
             username: self.login.username,
             password: md5(self.login.password)

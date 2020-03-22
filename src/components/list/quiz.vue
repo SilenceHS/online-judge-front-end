@@ -50,7 +50,10 @@
       <Cell :xs="25" :sm="25" :md="14" :lg="12" :xl="14">
         <div class="h-panel" ref="panel">
           <div class="h-panel-bar">
-            <div class="divcenter">{{datas.name}}</div>
+            <div class="divcenter">{{datas.name}}<i v-if="accepted" class="h-icon-check" style="color:#5C9A4F;font-size:25px;"></i></div>
+            <div >
+              
+            </div>
             <div style="text-align:center;border-bottom: solid 2px #eee;line-height: 2.5em;">
               <span style="font-size: 16px;color: green;">时间限制</span>
               <span style="font-size: 17px;">:{{datas.timelimit}}ms&ensp;</span>
@@ -91,7 +94,12 @@
               class="h-btn h-btn-text-blue h-btn-transparent;"
               style="margin-top:10px;float:right"
             >提交历史</button>
-            <Button color="blue" style="margin-top:10px;float:right;margin-right:10px" @click="submit">提交</Button>
+            <Button
+              color="blue"
+              style="margin-top:10px;float:right;margin-right:10px"
+              @click="submit"
+              :loading="judging"
+            >提交</Button>
           </div>
           <div></div>
         </div>
@@ -123,55 +131,133 @@ export default {
   data() {
     return {
       datas: [],
-      mycode:"//TODO",
+      judging: false,
+      mycode: "//TODO",
       select: "Python3",
       param: ["Python3", "Java", "C", "C++"],
+      result: "",
+      accepted: false
     };
   },
   methods: {
-    setSize(){
+    setSize() {
       this.editor.setSize("auto", this.$refs.panel.clientHeight - 80 + "px");
     },
-    submit(){
-      var self=this
-      var usercode=this.editor.getValue()
-      var language=this.select
-      var username=JSON.parse(localStorage.getItem('User')).username
-      var quizurl=self.$route.query.quiz
-       this.$http
-          .post("http://"+this.Parms.host+this.Parms.port+"/api/postquiz/", {
-              code: usercode,
-              language: language,
-              username: username,
-              quizurl:quizurl
-          },{emulateJSON:true})
+    submit() {
+      var self = this;
+      var usercode = this.editor.getValue();
+      var language = this.select;
+      var username = JSON.parse(localStorage.getItem("User")).username;
+      var quizurl = self.$route.query.quiz;
+      this.$http
+        .post(
+          "http://" + this.Parms.host + this.Parms.port + "/api/postquiz/",
+          {
+            code: usercode,
+            language: language,
+            username: username,
+            quizurl: quizurl
+          },
+          { emulateJSON: true }
+        )
+        .then(
+          response => {
+            if (response.body.status == "200") {
+              var judgingmessage = this.$Message.loading(`正在判题中`, 0);
+              this.judging = true;
+              this.getStatus(response.body.tempid, judgingmessage);
+            } else if (response.body.status == "500") {
+              alert("服务器连接失败");
+              this.judging = false;
+            }
+          },
+          response => {
+            this.judging = false;
+            alert("服务器维护中");
+          }
+        );
+    },
+    getStatus(tempid, judgingmessage) {
+      var self = this;
+      var interval = null;
+      var trytimes = 5;
+      interval = setInterval(function() {
+        self.$http
+          .post(
+            "http://" +
+              self.Parms.host +
+              self.Parms.port +
+              "/api/gettempstatus/",
+            {
+              tempid: tempid
+            },
+            { emulateJSON: true }
+          )
           .then(
             response => {
-              self.$Loading.close();
               if (response.body.status == "200") {
-                this.$Message["success"](`提交成功！正在判题中，请稍等`);
-              } 
-              else if(response.body.status == "500")
-              {
-                alert('服务器连接失败')
-              }
-              else {
-                
+                self.judging = false;
+                judgingmessage.close();
+                switch (response.body.result) {
+                  case "NON_ZERO_EXIT_CODE":
+                    self.$Message["error"](
+                      `错误!代码非零退出(Non-zero exit code)`,
+                      0
+                    );
+                    break;
+                  case "MEMORY_LIMIT_EXCEEDED":
+                    self.$Message["error"](`错误!内存超限(MLE)`, 0);
+                    break;
+                  case "TIME_LIMIT_EXCEEDED":
+                    self.$Message["error"](`错误!运行时间超限(TLE)`, 0);
+                    break;
+                  case "OUTPUT_LIMIT_EXCEEDED":
+                    self.$Message["error"](`错误!输出超限(OLE)`, 0);
+                    break;
+                  case "PRESENTATION_ERROR":
+                    self.$Message["error"](`错误!输出格式不正确(PE)`, 0);
+                    break;
+                  case "ACCEPTED":
+                    self.$Message["success"](`完全正确!(AC!)`, 0);
+                    self.accepted = true;
+                    break;
+                  case "RUNTIME_ERROR":
+                    self.$Message["error"](`错误!运行时错误(RE)`, 0);
+                    break;
+                  case "WRONG_ANSWER":
+                    self.$Message["error"](`错误!答案错误(WA)`, 0);
+                    break;
+                  case "COMPILATION_ERROR":
+                    self.$Message["error"](`错误!编译错误(CE)`, 0);
+                    break;
+                  default:
+                    self.$Message["error"](`错误!未知错误`, 0);
+                }
+                clearInterval(interval);
+              } else if (response.body.status == "205") {
+                trytimes -= 1;
+                if (trytimes <= 0) {
+                  clearInterval(interval);
+                }
+              } else {
+                clearInterval(interval);
               }
             },
             response => {
-              self.$Loading.close();
+              clearInterval(interval);
+              self.judging = false;
               alert("服务器维护中");
-            })
+            }
+          );
+      }, 2000);
     }
   },
   updated: function() {
-    
     //alert("更新")
   },
   mounted: function() {
     var self = this;
-   
+
     setTimeout(function() {
       self.editor = CodeMirror.fromTextArea(self.$refs.mycode, {
         mode: "python",
@@ -185,7 +271,7 @@ export default {
         styleActiveLine: true,
         indentUnit: 4
       });
-      self.setSize()
+      self.setSize();
     }, 500);
 
     this.$Loading("加载中~~");
@@ -193,7 +279,10 @@ export default {
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
-        "http://"+this.Parms.host+this.Parms.port+"/api/getquiz/" +
+        "http://" +
+          this.Parms.host +
+          this.Parms.port +
+          "/api/getquiz/" +
           self.$route.query.list +
           "/" +
           self.$route.query.quiz +
@@ -204,6 +293,7 @@ export default {
         response => {
           if (response.body.status == "200") {
             self.datas = response.body.quiz[0].fields;
+            self.accepted = response.body.accepted;
             console.log(self.datas);
             this.$Loading.close();
           } else {

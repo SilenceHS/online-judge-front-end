@@ -55,7 +55,7 @@
             <Table :datas="datas">
               <TableItem title align="right" :width="50">
                 <template slot-scope="{data}">
-                  <div v-if="data.status=='AC'">
+                  <div v-if="data.status=='ACCEPTED'">
                     <i class="h-icon-check" style="color:#5C9A4F;font-size:15px;"></i>
                   </div>
                 </template>

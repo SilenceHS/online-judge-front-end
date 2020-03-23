@@ -109,7 +109,7 @@
       </DropdownMenu>
     </div>
     
-    <div >
+    <div v-if="User.type==0">
       <appLogo style="float:left;"></appLogo>
       <div class="app-header-info">
       <div class="app-header-icon-item" v-tooltip content="官方题库" theme="white" @click="officialList">
@@ -123,6 +123,42 @@
       </div>
       <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
         <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
+        <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
+      </div>
+      </div>
+    </div>
+
+    <div v-if="User.type==1">
+      <appLogo style="float:left;"></appLogo>
+      <div class="app-header-info">
+      <div class="app-header-icon-item" v-tooltip content="官方题库" theme="white" @click="officialList">
+        <i class="icon-book"><b style="font-size:16px;">官方题库</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="学生账号管理" theme="white" @click="showSettingModal">
+        <i class="icon-align-left"><b style="font-size:16px;">学生账号管理</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
+        <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
+        <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
+      </div>
+      </div>
+    </div>
+
+    <div v-if="User.type==2">
+      <appLogo style="float:left;"></appLogo>
+      <div class="app-header-info">
+      <div class="app-header-icon-item" v-tooltip content="官方题库管理" theme="white" @click="officialList">
+        <i class="icon-book"><b style="font-size:16px;">官方题库管理</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="账号管理" theme="white" @click="showSettingModal">
+        <i class="icon-align-left"><b style="font-size:16px;">账号管理</b></i>
+      </div>
+      <div class="app-header-icon-item" v-tooltip content="判题管理" theme="white" @click="showSettingModal">
+        <i class="icon-paper"><b style="font-size:16px;">判题管理</b></i>
       </div>
       <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
         <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
@@ -143,6 +179,7 @@ export default {
   },
   data() {
     return {
+      usertype:'',
       User:null,
       siderCollapsed:false,
       searchText: '',

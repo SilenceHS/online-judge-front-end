@@ -31,95 +31,111 @@ Vue.use(VueRouter);
 Vue.use(animated);
 Vue.use(vueResource);
 Vue.use(VueCodeMirror)
-Vue.prototype.Parms=Parms
+Vue.prototype.Parms = Parms
 // const router = routerConfig();
 var router = new VueRouter({
 	routes: [{
-			path: '/',
-			component: (resolve) => require(['components/app/app-frame'], resolve),
-			children:[
-				{
+		path: '/',
+		component: (resolve) => require(['components/app/app-frame'], resolve),
+		children: [
+			{
 				path: '',
 				name: 'Home',
 				component: (resolve) => require(['components/main/mainpage'], resolve),
-				meta:{
-					title:'首页',
+				meta: {
+					title: '首页',
 					type: 'login'
 				},
+			},
+			{
+				path: 'list',
+				component: (resolve) => require(['components/list/list'], resolve),
+				meta: {
+					title: '官方题库',
+					type: 'login'
 				},
-				{
-					path: 'list',
-					component: (resolve) => require(['components/list/list'], resolve),
-					meta:{
-						title:'官方题库',
-						type: 'login'
-					},
+			},
+			{
+				path: 'quiz',
+				component: (resolve) => require(['components/list/quiz'], resolve),
+				meta: {
+					title: '题目详情',
+					type: 'login'
 				},
-				{
-					path: 'quiz',
-					component: (resolve) => require(['components/list/quiz'], resolve),
-					meta:{
-						title:'题目详情',
-						type: 'login'
-					},
-				}
+			},
+			{
+				path: 'officialModify',
+				component: (resolve) => require(['components/list/adminList'], resolve),
+				meta: {
+					title: '管理官方题库',
+					type: 'admin'
+				},
+			},
 
-			]
+		]
+	},
+	{
+		path: '/login',
+		component: (resolve) => require(['components/login/index'], resolve),
+		meta: {
+			title: '登录',
+			type: ''
 		},
-		{
-			path: '/login',
-			component: (resolve) => require(['components/login/index'], resolve),
-			meta:{
-				title:'登录',
-				type: ''
-			},
+	},
+	{
+		path: '/register',
+		component: (resolve) => require(['components/register/index'], resolve),
+		meta: {
+			title: '注册',
+			type: ''
 		},
-		{
-			path: '/register',
-			component: (resolve) => require(['components/register/index'], resolve),
-			meta:{
-				title:'注册',
-				type: ''
-			},
+	},
+	{
+		path: '/active',
+		component: (resolve) => require(['components/active/index'], resolve),
+		meta: {
+			title: '激活',
+			type: ''
 		},
-		{
-			path: '/active',
-			component: (resolve) => require(['components/active/index'], resolve),
-			meta:{
-				title:'激活',
-				type: ''
-			},
-		},
+	},
 
 
 
 	]
 })
-router.beforeEach((to,from,next)=>{
+router.beforeEach((to, from, next) => {
 	if (to.meta.title) {
-	  document.title = to.meta.title
+		document.title = to.meta.title
 	}
 	const type = to.meta.type
 	console.log(to)
 	console.log(from)
 	// 判断该路由是否需要登录权限
-	var User=JSON.parse(localStorage.getItem('User'));
+	var User = JSON.parse(localStorage.getItem('User'));
 	console.log(User)
 	if (type == 'login') {
-		if (User==null){
+		if (User == null) {
 			alert("登录失败")
 			next('/login')
-			
+
 		}
-		else
-		{
+		else {
 			next()
 		}
-	  }
-	 else {
+	}
+	else if (type == 'admin') {
+		if (User == null || User.username!="admin") {
+			alert("登录失败")
+			next('/login')
+		}
+		else {
+			next()
+		}
+	}
+	else {
 		next()
 	}
-  })
+})
 export default new Vue({
 	router,
 	render: h => h(App)

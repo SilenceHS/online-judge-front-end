@@ -151,7 +151,7 @@
     <div v-if="User.type==2">
       <appLogo style="float:left;"></appLogo>
       <div class="app-header-info">
-      <div class="app-header-icon-item" v-tooltip content="官方题库管理" theme="white" @click="officialList">
+      <div class="app-header-icon-item" v-tooltip content="官方题库管理" theme="white" @click="officialModify">
         <i class="icon-book"><b style="font-size:16px;">官方题库管理</b></i>
       </div>
       <div class="app-header-icon-item" v-tooltip content="账号管理" theme="white" @click="showSettingModal">
@@ -250,6 +250,9 @@ export default {
     },
     officialList() {
       this.$router.push("/list/?list=0")
+    },
+    officialModify(){
+      this.$router.push("/officialModify")
     }
 
   },

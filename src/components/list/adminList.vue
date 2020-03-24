@@ -38,6 +38,7 @@
 </style>
 <template>
   <div class="app-home-vue frame-page">
+    <Skeleton active :loading="loading" :rows=5>
     <Row :space="30">
       <Cell :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
         <div class="h-panel">
@@ -46,14 +47,16 @@
             <div class="h-panel-right">
               <span class="gray-color">总题数</span>
               <i class="h-split"></i>
-              <span class="font20 primary-color">200</span>
+              <span class="font20 primary-color">{{datas.length}}</span>
               <i class="h-split"></i>
               <span class="gray-color"></span>
             </div>
           </div>
+          <Search v-model="keywords" position="front" trigger-type="input" block placeholder="搜索题目id, 题名，难度"></Search>
+          
           <div>
-            <Table :datas="datas">
-              <TableItem title align="right" :width="50">
+            <Table :datas="listData" >
+              <TableItem title align="right" :width="50" >
                 <template slot-scope="{data}">
                   <div v-if="data.status=='ACCEPTED'">
                     <i class="h-icon-check" style="color:#5C9A4F;font-size:15px;"></i>
@@ -65,8 +68,8 @@
                   <div class="body-text">{{data.id}}</div>
                 </template>
               </TableItem>
-              <TableItem title="题名" >
-                <template slot-scope="{data}" >
+              <TableItem title="题名">
+                <template slot-scope="{data}">
                   <router-link
                     class="body-text"
                     style="color:#3787C6"
@@ -91,14 +94,18 @@
                   <div v-if="data.level=='困难'" class="body-text" style="color:#DB584E;">困难</div>
                 </template>
               </TableItem>
-               <TableItem title="操作" align="center" :width="200">
-                   <template slot-scope="{data}">
-                 <Button text-color="blue" icon="h-icon-trash"></Button>
-                <Button text-color="red" icon="h-icon-trash"></Button>
+              <TableItem title="操作" align="center" :width="130">
+                <template slot-scope="{data}">
+                  <Button color="blue" icon="h-icon-edit"></Button>
+                  <Poptip content="删除此题会同时删除答题记录，是否删除？" @confirm="confirm(data.id)">
+                    <Button color="red" icon="h-icon-trash"></Button>
+                  </Poptip>
                 </template>
               </TableItem>
             </Table>
+            
           </div>
+          
         </div>
       </Cell>
       <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
@@ -184,6 +191,7 @@
         </div>
       </Cell>
     </Row>
+    </Skeleton>
   </div>
 </template>
 <script>
@@ -199,9 +207,10 @@ export default {
       stripe: true,
       checkbox: false,
       serial: true,
-      loading: false,
+      loading: true,
       listId: 0,
-      datas: []
+      datas: [],
+      keywords: ""
     };
   },
   methods: {
@@ -210,16 +219,48 @@ export default {
     },
     messageRender(data, index) {
       return 'style="color: #ff0;"';
-    }
+    },
+    confirm(id) {
+
+      this.$http
+          .post(
+            "http://" +
+              this.Parms.host +
+              this.Parms.port +
+              "/api/deleteQuiz/",
+            {
+              id: id
+            },
+            { emulateJSON: true }
+          )
+          .then(
+            response => {
+              if (response.body.status == "200") {
+                self.$Message["success"](`删除成功`);
+              } else if (response.body.status == "205") {
+              
+              } else {
+              
+              }
+            },
+            response => {
+            
+              alert("服务器维护中");
+            }
+          );
+      
+    },
   },
   mounted: function() {
-    this.$Loading("加载中~~");
     var self = this;
-    self.listId = '0';
+    self.listId = "0";
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
-        "http://"+this.Parms.host+this.Parms.port+"/api/getquizlist/" +
+        "http://" +
+          this.Parms.host +
+          this.Parms.port +
+          "/api/getquizlist/" +
           self.listId +
           "/" +
           user.username
@@ -228,23 +269,36 @@ export default {
         response => {
           if (response.body.status == "200") {
             self.datas = response.body.quizlist;
-             setTimeout(function() {
-              self.$Loading.close();
+            setTimeout(function() {
+              self.loading=false
             }, 500);
           } else {
             self.msg = "激活失败~~\n重复激活或激活链接已失效";
             setTimeout(function() {
-              self.$Loading.close();
             }, 500);
           }
         },
         response => {
           alert("服务器维护中");
           setTimeout(function() {
-            self.$Loading.close();
           }, 500);
         }
       );
+  },
+  computed: {
+    listData() {
+      if (this.keywords == "") {
+        return this.datas;
+      } else {
+        return this.datas.filter(value => {
+          return (
+            (value.id).toString().indexOf(this.keywords)!=-1 ||
+            (value.name).indexOf(this.keywords)!=-1  ||
+            (value.level).indexOf(this.keywords)!=-1 
+          ); //如果包含字符返回true
+        });
+      }
+    }
   }
 };
 </script>

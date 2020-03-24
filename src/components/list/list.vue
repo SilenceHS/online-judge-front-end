@@ -51,8 +51,10 @@
               <span class="gray-color"></span>
             </div>
           </div>
+          <Search v-model="keywords" position="front" trigger-type="input" block placeholder="搜索题目id, 题名，难度"></Search>
           <div>
-            <Table :datas="datas">
+            
+            <Table :datas="listData">
               <TableItem title align="right" :width="50">
                 <template slot-scope="{data}">
                   <div v-if="data.status=='ACCEPTED'">
@@ -195,7 +197,8 @@ export default {
       serial: true,
       loading: false,
       listId: 0,
-      datas: []
+      datas: [],
+      keywords: ""
     };
   },
   methods: {
@@ -204,7 +207,10 @@ export default {
     },
     messageRender(data, index) {
       return 'style="color: #ff0;"';
-    }
+    },
+    confirm() {
+      this.$Message.success("删除成功");
+    },
   },
   mounted: function() {
     this.$Loading("加载中~~");
@@ -239,6 +245,21 @@ export default {
           }, 500);
         }
       );
+  },
+   computed: {
+    listData() {
+      if (this.keywords == "") {
+        return this.datas;
+      } else {
+        return this.datas.filter(value => {
+          return (
+            (value.id).toString().indexOf(this.keywords)!=-1 ||
+            (value.name).indexOf(this.keywords)!=-1  ||
+            (value.level).indexOf(this.keywords)!=-1 
+          ); //如果包含字符返回true
+        });
+      }
+    }
   }
 };
 </script>

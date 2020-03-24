@@ -52,8 +52,10 @@
               <span class="gray-color"></span>
             </div>
           </div>
-          <Search v-model="keywords" position="front" trigger-type="input" block placeholder="搜索题目id, 题名，难度"></Search>
-          
+          <div>
+          <Search v-model="keywords" position="front" trigger-type="input" placeholder="搜索题目id, 题名，难度" style="display:inline-block; width: 90%;"></Search>
+          <Button color="blue" icon="h-icon-plus" @click="addQuiz"></Button>
+          </div>
           <div>
             <Table :datas="listData" >
               <TableItem title align="right" :width="50" >
@@ -210,7 +212,7 @@ export default {
       loading: true,
       listId: 0,
       datas: [],
-      keywords: ""
+      keyWords: ""
     };
   },
   methods: {
@@ -250,6 +252,9 @@ export default {
           );
       
     },
+    addQuiz(){
+
+    },
   },
   mounted: function() {
     var self = this;
@@ -263,12 +268,12 @@ export default {
           "/api/getquizlist/" +
           self.listId +
           "/" +
-          user.username
+          user.userName
       )
       .then(
         response => {
           if (response.body.status == "200") {
-            self.datas = response.body.quizlist;
+            self.datas = response.body.quizList;
             setTimeout(function() {
               self.loading=false
             }, 500);
@@ -287,14 +292,14 @@ export default {
   },
   computed: {
     listData() {
-      if (this.keywords == "") {
+      if (this.keyWords == "") {
         return this.datas;
       } else {
         return this.datas.filter(value => {
           return (
-            (value.id).toString().indexOf(this.keywords)!=-1 ||
-            (value.name).indexOf(this.keywords)!=-1  ||
-            (value.level).indexOf(this.keywords)!=-1 
+            (value.id).toString().indexOf(this.keyWords)!=-1 ||
+            (value.name).indexOf(this.keyWords)!=-1  ||
+            (value.level).indexOf(this.keyWords)!=-1 
           ); //如果包含字符返回true
         });
       }

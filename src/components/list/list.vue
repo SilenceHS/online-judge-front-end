@@ -51,7 +51,7 @@
               <span class="gray-color"></span>
             </div>
           </div>
-          <Search v-model="keywords" position="front" trigger-type="input" block placeholder="搜索题目id, 题名，难度"></Search>
+          <Search v-model="keyWords" position="front" trigger-type="input" block placeholder="搜索题目id, 题名，难度"></Search>
           <div>
             
             <Table :datas="listData">
@@ -198,7 +198,7 @@ export default {
       loading: false,
       listId: 0,
       datas: [],
-      keywords: ""
+      keyWords: ""
     };
   },
   methods: {
@@ -222,12 +222,12 @@ export default {
         "http://"+this.Parms.host+this.Parms.port+"/api/getquizlist/" +
           self.listId +
           "/" +
-          user.username
+          user.userName
       )
       .then(
         response => {
           if (response.body.status == "200") {
-            self.datas = response.body.quizlist;
+            self.datas = response.body.quizList;
              setTimeout(function() {
               self.$Loading.close();
             }, 500);
@@ -248,14 +248,14 @@ export default {
   },
    computed: {
     listData() {
-      if (this.keywords == "") {
+      if (this.keyWords == "") {
         return this.datas;
       } else {
         return this.datas.filter(value => {
           return (
-            (value.id).toString().indexOf(this.keywords)!=-1 ||
-            (value.name).indexOf(this.keywords)!=-1  ||
-            (value.level).indexOf(this.keywords)!=-1 
+            (value.id).toString().indexOf(this.keyWords)!=-1 ||
+            (value.name).indexOf(this.keyWords)!=-1  ||
+            (value.level).indexOf(this.keyWords)!=-1 
           ); //如果包含字符返回true
         });
       }

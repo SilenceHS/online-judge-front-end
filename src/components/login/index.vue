@@ -139,8 +139,8 @@ body{ overflow-x:scroll  ;overflow-y:scroll  ;}
         <div :class="userNameObj.style">
           <input
             type="text"
-            name="username"
-            v-model="login.username"
+            name="userName"
+            v-model="login.userName"
             autocomplete="off"
             maxlength="20"
             @focus="clearError('userNameObj')"
@@ -148,7 +148,7 @@ body{ overflow-x:scroll  ;overflow-y:scroll  ;}
           />
           <span
             class="placeholder"
-            :class="{fixed: login.username != '' && login.username != null}"
+            :class="{fixed: login.userName != '' && login.userName != null}"
           >用户名或邮箱</span>
           <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
             <span
@@ -161,7 +161,7 @@ body{ overflow-x:scroll  ;overflow-y:scroll  ;}
           <input
             type="password"
             name="password"
-            v-model="login.password"
+            v-model="login.passWord"
             @keyup.enter="submit"
             autocomplete="off"
             maxlength="20"
@@ -170,7 +170,7 @@ body{ overflow-x:scroll  ;overflow-y:scroll  ;}
           />
           <span
             class="placeholder"
-            :class="{fixed: login.password != '' && login.password != null}"
+            :class="{fixed: login.passWord != '' && login.passWord != null}"
           >密码</span>
           <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
             <span
@@ -233,8 +233,8 @@ export default {
       this.$http
         .get("http://"+this.Parms.host+this.Parms.port+"/api/login/", {
           params: {
-            username: self.login.username,
-            password: md5(self.login.password)
+            username: self.login.userName,
+            password: md5(self.login.passWord)
           }
         })
         .then(
@@ -260,7 +260,7 @@ export default {
       eval("this." + obj + '.errorMsg=""');
     },
     checkNullName() {
-      if (this.login.username == null || this.login.username == "") {
+      if (this.login.userName == null || this.login.userName == "") {
         this.userNameObj.errorMsg = "用户名不能为空";
         this.userNameObj.style.shake = true;
         return false;
@@ -269,7 +269,7 @@ export default {
       return true;
     },
     checkNullPsw() {
-      if (this.login.password == null || this.login.password == "") {
+      if (this.login.passWord == null || this.login.passWord == "") {
         this.passwordObj.errorMsg = "密码不能为空";
         this.passwordObj.style.shake = true;
         return false;

@@ -56,9 +56,9 @@
             </div>
             <div style="text-align:center;border-bottom: solid 2px #eee;line-height: 2.5em;">
               <span style="font-size: 16px;color: green;">时间限制</span>
-              <span style="font-size: 17px;">:{{datas.timelimit}}ms&ensp;</span>
+              <span style="font-size: 17px;">:{{datas.timeLimit}}ms&ensp;</span>
               <span style="font-size: 16px;color: green;">内存限制</span>
-              <span style="font-size: 17px;">:{{datas.memorylimit}}KB</span>
+              <span style="font-size: 17px;">:{{datas.memoryLimit}}KB</span>
             </div>
             <div style="font-size: 180%;line-height: 2.5em;">题目描述</div>
             <div style="font-size: 16px;">{{datas.description}}</div>
@@ -68,9 +68,9 @@
             <div style="font-size: 16px;">{{datas.output}}</div>
 
             <div style="font-size: 180%;line-height: 2.5em;">输入样例</div>
-            <div style="font-size: 16px;">{{datas.sampleinput}}</div>
+            <div style="font-size: 16px;">{{datas.sampleInput}}</div>
             <div style="font-size: 180%;line-height: 2.5em;">输出样例</div>
-            <div style="font-size: 16px;">{{datas.sampleoutput}}</div>
+            <div style="font-size: 16px;">{{datas.sampleOutput}}</div>
           </div>
           <div></div>
         </div>
@@ -145,17 +145,17 @@ export default {
     },
     submit() {
       var self = this;
-      var usercode = this.editor.getValue();
+      var userCode = this.editor.getValue();
       var language = this.select;
-      var username = JSON.parse(localStorage.getItem("User")).username;
+      var userName = JSON.parse(localStorage.getItem("User")).userName;
       var quizurl = self.$route.query.quiz;
       this.$http
         .post(
           "http://" + this.Parms.host + this.Parms.port + "/api/postquiz/",
           {
-            code: usercode,
+            code: userzCode,
             language: language,
-            username: username,
+            username: userName,
             quizurl: quizurl
           },
           { emulateJSON: true }
@@ -163,9 +163,9 @@ export default {
         .then(
           response => {
             if (response.body.status == "200") {
-              var judgingmessage = this.$Message.loading(`正在判题中`, 0);
+              var judgingMessage = this.$Message.loading(`正在判题中`, 0);
               this.judging = true;
-              this.getStatus(response.body.tempid, judgingmessage);
+              this.getStatus(response.body.tempId, judgingMessage);
             } else if (response.body.status == "500") {
               alert("服务器连接失败");
               this.judging = false;
@@ -180,7 +180,7 @@ export default {
     getStatus(tempid, judgingmessage) {
       var self = this;
       var interval = null;
-      var trytimes = 5;
+      var tryTimes = 5;
       interval = setInterval(function() {
         self.$http
           .post(
@@ -235,8 +235,8 @@ export default {
                 }
                 clearInterval(interval);
               } else if (response.body.status == "205") {
-                trytimes -= 1;
-                if (trytimes <= 0) {
+                tryTimes -= 1;
+                if (tryTimes <= 0) {
                   clearInterval(interval);
                 }
               } else {

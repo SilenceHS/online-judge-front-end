@@ -53,7 +53,7 @@
             </div>
           </div>
           <div>
-          <Search v-model="keywords" position="front" trigger-type="input" placeholder="搜索题目id, 题名，难度" style="display:inline-block; width: 90%;"></Search>
+          <Search v-model="keyWords" position="front" trigger-type="input" placeholder="搜索题目id, 题名，难度" style="display:inline-block; width: 90%;"></Search>
           <Button color="blue" icon="h-icon-plus" @click="addQuiz"></Button>
           </div>
           <div>
@@ -211,7 +211,7 @@ export default {
       serial: true,
       loading: true,
       listId: 0,
-      datas: [],
+      datas: "",
       keyWords: ""
     };
   },
@@ -253,13 +253,14 @@ export default {
       
     },
     addQuiz(){
-
+      this.$router.push({path:"/addQuiz",query:{courseid:1}})
     },
   },
   mounted: function() {
     var self = this;
-    self.listId = "0";
+    self.listId = "1";
     var user = JSON.parse(localStorage.getItem("User"));
+    console.log(user)
     this.$http
       .get(
         "http://" +
@@ -273,6 +274,7 @@ export default {
       .then(
         response => {
           if (response.body.status == "200") {
+            console.log(response.body.quizList)
             self.datas = response.body.quizList;
             setTimeout(function() {
               self.loading=false

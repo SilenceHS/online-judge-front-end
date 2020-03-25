@@ -105,7 +105,7 @@
         <i class="h-icon-help"></i>
       </div>
       <DropdownMenu className="app-header-dropdown" trigger="hover" offset="0,5" :width="150" placement="bottom-end" :datas="infoMenu" @onclick="trigger">
-        <Avatar :src="User.avatar_url" :width="30"><span>{{User.username}}</span></Avatar>
+        <Avatar :src="User.avatar_url" :width="30"><span>{{User.userName}}</span></Avatar>
       </DropdownMenu>
     </div>
     
@@ -249,7 +249,7 @@ export default {
       // this.$emit('openSetting');
     },
     officialList() {
-      this.$router.push("/list/?list=0")
+      this.$router.push("/list/?list=1")
     },
     officialModify(){
       this.$router.push("/officialModify")

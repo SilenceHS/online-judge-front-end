@@ -71,6 +71,16 @@ var router = new VueRouter({
 					type: 'admin'
 				},
 			},
+			{
+				path: 'addQuiz',
+				name:"addQuiz",
+				component: (resolve) => require(['components/list/addQuiz'], resolve),
+				meta: {
+					title: '添加题目',
+					
+					type: 'login'
+				},
+			},
 
 		]
 	},
@@ -124,7 +134,7 @@ router.beforeEach((to, from, next) => {
 		}
 	}
 	else if (type == 'admin') {
-		if (User == null || User.username!="admin") {
+		if (User == null || User.type!=2) {
 			alert("登录失败")
 			next('/login')
 		}

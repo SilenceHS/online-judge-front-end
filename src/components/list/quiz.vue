@@ -56,9 +56,9 @@
             </div>
             <div style="text-align:center;border-bottom: solid 2px #eee;line-height: 2.5em;">
               <span style="font-size: 16px;color: green;">时间限制</span>
-              <span style="font-size: 17px;">:{{datas.timeLimit}}ms&ensp;</span>
+              <span style="font-size: 17px;">:{{datas.timelimit}}ms&ensp;</span>
               <span style="font-size: 16px;color: green;">内存限制</span>
-              <span style="font-size: 17px;">:{{datas.memoryLimit}}KB</span>
+              <span style="font-size: 17px;">:{{datas.memorylimit}}KB</span>
             </div>
             <div style="font-size: 180%;line-height: 2.5em;">题目描述</div>
             <div style="font-size: 16px;">{{datas.description}}</div>
@@ -68,9 +68,9 @@
             <div style="font-size: 16px;">{{datas.output}}</div>
 
             <div style="font-size: 180%;line-height: 2.5em;">输入样例</div>
-            <div style="font-size: 16px;">{{datas.sampleInput}}</div>
+            <div style="font-size: 16px;">{{datas.sampleinput}}</div>
             <div style="font-size: 180%;line-height: 2.5em;">输出样例</div>
-            <div style="font-size: 16px;">{{datas.sampleOutput}}</div>
+            <div style="font-size: 16px;">{{datas.sampleoutput}}</div>
           </div>
           <div></div>
         </div>
@@ -165,7 +165,7 @@ export default {
             if (response.body.status == "200") {
               var judgingMessage = this.$Message.loading(`正在判题中`, 0);
               this.judging = true;
-              this.getStatus(response.body.tempId, judgingMessage);
+              this.getStatus(response.body.tempid, judgingMessage);
             } else if (response.body.status == "500") {
               alert("服务器连接失败");
               this.judging = false;

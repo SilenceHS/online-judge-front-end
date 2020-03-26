@@ -61,16 +61,16 @@
               <span style="font-size: 17px;">:{{datas.memorylimit}}KB</span>
             </div>
             <div style="font-size: 180%;line-height: 2.5em;">题目描述</div>
-            <div style="font-size: 16px;">{{datas.description}}</div>
+            <div style="font-size: 16px;" v-html="datas.description"></div>
             <div style="font-size: 180%;line-height: 2.5em;">输入规则</div>
-            <div style="font-size: 16px;">{{datas.input}}</div>
+            <div style="font-size: 16px;" v-html="datas.input"></div>
             <div style="font-size: 180%;line-height: 2.5em;">输出规则</div>
-            <div style="font-size: 16px;">{{datas.output}}</div>
+            <div style="font-size: 16px;" v-html="datas.output"></div>
 
             <div style="font-size: 180%;line-height: 2.5em;">输入样例</div>
-            <div style="font-size: 16px;">{{datas.sampleinput}}</div>
+            <div style="font-size: 16px;" v-html="datas.sampleinput"></div>
             <div style="font-size: 180%;line-height: 2.5em;">输出样例</div>
-            <div style="font-size: 16px;">{{datas.sampleoutput}}</div>
+            <div style="font-size: 16px;" v-html="datas.sampleoutput"></div>
           </div>
           <div></div>
         </div>
@@ -153,7 +153,7 @@ export default {
         .post(
           "http://" + this.Parms.host + this.Parms.port + "/api/postquiz/",
           {
-            code: userzCode,
+            code: userCode,
             language: language,
             username: userName,
             quizurl: quizurl

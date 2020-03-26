@@ -80,6 +80,12 @@
             <input type="text" v-model="memorylimit" placeholder="参考值为:65535" />
             <div style="font-size: 180%;line-height: 2.5em;">测试用例</div>
             <textarea v-model="testcase" style="width:100%" v-autosize rows=15 :placeholder="placeholder"></textarea>
+            <div style="font-size: 180%;line-height: 2.5em;">可提交语言</div>
+            <Checkbox v-model="language" :datas="languageCheck" ></Checkbox>
+            <div style="font-size: 180%;line-height: 2.5em;">难度</div>
+            <Radio v-model="level" :datas="levelCheck"></Radio>
+            <div style="font-size: 180%;line-height: 2.5em;">标签(回车继续添加)</div>
+             <TagInput v-model="tag" :limit="10" :wordlimit="20"></TagInput>
              <Button color="blue" @click="submit">提交</Button>
           </div>
           <div></div>
@@ -120,6 +126,11 @@ export default {
     timelimit:"",
     memorylimit:"",
     testcase:"",
+    tag:"",
+    language:['Python3'],
+    languageCheck:['Python3','Java','C','C++'],
+    level:"简单",
+    levelCheck:['简单','普通','困难'],
       datas: [],
       judging: false,
       mycode: "//TODO",
@@ -135,6 +146,7 @@ export default {
       this.editor.setSize("auto", this.$refs.panel.clientHeight - 80 + "px");
     },
     submit() {
+      var self=this
       if(this.name!=null&&this.name!=""&&
       this.description!=null&&this.description!=""&&
       this.input!=null&&this.input!=""&&
@@ -165,7 +177,11 @@ export default {
         .then(
           response => {
             if (response.body.status == "200") {
-            
+
+              this.$Message['success'](`添加成功!`)
+               setTimeout(function() {
+               self.$router.back(-1)
+               },1000)
             } 
           },
           response => {

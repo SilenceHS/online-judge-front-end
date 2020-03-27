@@ -153,7 +153,7 @@ export default {
         .post(
           "http://" + this.Parms.host + this.Parms.port + "/api/postquiz/",
           {
-            code: userzCode,
+            code: userCode,
             language: language,
             username: userName,
             quizurl: quizurl

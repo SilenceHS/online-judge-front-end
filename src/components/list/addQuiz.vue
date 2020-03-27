@@ -86,7 +86,7 @@
             <Radio v-model="level" :datas="levelCheck"></Radio>
             <div style="font-size: 180%;line-height: 2.5em;">标签(回车继续添加)</div>
              <TagInput v-model="tag" :limit="10" :wordlimit="20"></TagInput>
-             <Button color="blue" @click="submit">提交</Button>
+             <Button color="blue" @click="submit" style="margin-top:10px">提交</Button>
           </div>
           <div></div>
         </div>
@@ -128,7 +128,7 @@ export default {
     testcase:"",
     tag:"",
     language:['Python3'],
-    languageCheck:['Python3','Java','C','C++'],
+    languageCheck:['Python3','Java','C','C++','JavaScript','Shell','Lua'],
     level:"简单",
     levelCheck:['简单','普通','困难'],
       datas: [],
@@ -170,6 +170,9 @@ export default {
             timelimit: this.timelimit,
             memorylimit: this.memorylimit,
             testcase: this.testcase,
+            language:(this.language).toString(),
+            level:this.level,
+            tag:(this.tag).toString(),
             courseid:this.$route.query.courseid,
           },
           { emulateJSON: true }
@@ -192,7 +195,7 @@ export default {
 
       }
       else{
-          alert(this.$route.query.courseid)
+          this.$Message['error'](`请检查是否填写完整`)
       }
 
     //   this.$http

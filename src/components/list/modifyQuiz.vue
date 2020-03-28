@@ -211,7 +211,8 @@ export default {
               language: this.language.toString(),
               level: this.level,
               tag: this.tag.toString(),
-              courseid: this.$route.query.courseid
+              courseid: this.$route.query.courseid,
+              url:this.$route.query.quizurl
             },
             { emulateJSON: true }
           )

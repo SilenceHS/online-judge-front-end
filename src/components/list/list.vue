@@ -47,7 +47,7 @@
             <div class="h-panel-right">
               <span class="gray-color">总题数</span>
               <i class="h-split"></i>
-              <span class="font20 primary-color">200</span>
+              <span class="font20 primary-color">{{datas.length}}</span>
               <i class="h-split"></i>
               <span class="gray-color"></span>
             </div>
@@ -103,7 +103,7 @@
           </div>
         </div>
       </Cell>
-      <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+      <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6"  v-if="datas.length!=0">
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="h-panel-title">完成情况</div>
@@ -118,16 +118,16 @@
           <div class="h-panel-body">
             <Row :space="20">
               <Cell :width="10" class="text-right">
-                <h-circle :percent="76" :stroke-width="10" :size="90">
+                <h-circle :percent="solvedNum/datas.length*100" :stroke-width="10" :size="90">
                   <p>
-                    <span class="font28">{{parseInt(123*76/100)}}</span>
-                    <span class="gray-color">/ 123</span>
+                    <span class="font28">{{solvedNum}}</span>
+                    <span class="gray-color">/ {{datas.length}}</span>
                   </p>
                 </h-circle>
               </Cell>
               <Cell :width="14">
                 <p class="gray-color">目前完成比例</p>
-                <p class="dark-color font22">90%</p>
+                <p class="dark-color font22">{{solvedNum/datas.length*100}}%</p>
               </Cell>
             </Row>
           </div>
@@ -180,10 +180,11 @@ import data3 from "js/datas/data4";
 export default {
   data() {
     return {
-      loading: false,
+      loading: true,
       listId: 0,
       datas: [],
-      keyWords: ""
+      keyWords: "",
+      solvedNum:0
     };
   },
   methods: {
@@ -192,7 +193,6 @@ export default {
     },
   },
   mounted: function() {
-    this.$Loading("加载中~~");
     var self = this;
     self.listId = self.$route.query.list;
     var user = JSON.parse(localStorage.getItem("User"));
@@ -207,8 +207,12 @@ export default {
         response => {
           if (response.body.status == "200") {
             self.datas = response.body.quizList;
+             for(var i in self.datas){
+              if(self.datas[i].status=='ACCEPTED')
+                self.solvedNum+=1
+            }
              setTimeout(function() {
-              self.$Loading.close();
+              self.loading=false
             }, 500);
           } else {
               alert("服务器维护中");

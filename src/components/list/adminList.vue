@@ -102,6 +102,20 @@
                     <div v-if="data.level=='困难'" class="body-text" style="color:#DB584E;">困难</div>
                   </template>
                 </TableItem>
+
+                <TableItem title="标签" align="center" :width="200">
+                  <template slot-scope="{data}">
+                    <div class="body-text">
+                      <span
+                        v-for="(tag,i) in (data.tag).split(',')"
+                        class="h-tag h-tag-blue"
+                        :key="i"
+                        v-show="tag!=''"
+                      >{{tag}}</span>
+                    </div>
+                  </template>
+                </TableItem>
+
                 <TableItem title="操作" align="center" :width="130">
                   <template slot-scope="{data}">
                     <Button color="blue" icon="h-icon-edit" @click="modifyQuiz(data.url)"></Button>
@@ -114,7 +128,7 @@
             </div>
           </div>
         </Cell>
-        <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+        <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6"  v-if="datas.length!=0">
           <div class="h-panel">
             <div class="h-panel-bar">
               <div class="h-panel-title">完成情况</div>
@@ -129,16 +143,16 @@
             <div class="h-panel-body">
               <Row :space="20">
                 <Cell :width="10" class="text-right">
-                  <h-circle :percent="76" :stroke-width="10" :size="90">
+                  <h-circle :percent="solvedNum/datas.length*100" :stroke-width="10" :size="90">
                     <p>
-                      <span class="font28">{{parseInt(123*76/100)}}</span>
-                      <span class="gray-color">/ 123</span>
+                      <span class="font28">{{solvedNum}}</span>
+                      <span class="gray-color">/ {{datas.length}}</span>
                     </p>
                   </h-circle>
                 </Cell>
                 <Cell :width="14">
                   <p class="gray-color">目前完成比例</p>
-                  <p class="dark-color font22">90%</p>
+                  <p class="dark-color font22">{{solvedNum/datas.length*100}}%</p>
                 </Cell>
               </Row>
             </div>
@@ -194,7 +208,8 @@ export default {
       loading: true,
       listId: 1,
       datas: "",
-      keyWords: ""
+      keyWords: "",
+      solvedNum:0
     };
   },
   methods: {
@@ -214,10 +229,8 @@ export default {
             if (response.body.status == "200") {
               this.$Message["success"](`删除成功`);
               setTimeout(function() {
-               self.datas= self.datas.filter(value => {
-                  return (
-                    !(value.id == id)
-                  );
+                self.datas = self.datas.filter(value => {
+                  return !(value.id == id);
                 });
               }, 200);
             } else {
@@ -232,15 +245,17 @@ export default {
     addQuiz() {
       this.$router.push({ path: "/addQuiz", query: { courseid: 1 } });
     },
-    modifyQuiz(quizurl){
-      this.$router.push({ path: "/modifyQuiz", query: { courseid: 1,quizurl:quizurl} });
+    modifyQuiz(quizurl) {
+      this.$router.push({
+        path: "/modifyQuiz",
+        query: { courseid: 1, quizurl: quizurl }
+      });
     }
   },
   mounted: function() {
     var self = this;
     self.listId = "1";
     var user = JSON.parse(localStorage.getItem("User"));
-    console.log(user);
     this.$http
       .get(
         "http://" +
@@ -254,14 +269,16 @@ export default {
       .then(
         response => {
           if (response.body.status == "200") {
-            console.log(response.body.quizList);
             self.datas = response.body.quizList;
+            for(var i in self.datas){
+              if(self.datas[i].status=='ACCEPTED')
+                self.solvedNum+=1
+            }
             setTimeout(function() {
               self.loading = false;
             }, 500);
           } else {
             alert("服务器维护中");
-            
           }
         },
         response => {

@@ -287,7 +287,7 @@ export default {
           "/" +
           self.$route.query.quiz +
           "/" +
-          user.username
+          user.userName
       )
       .then(
         response => {

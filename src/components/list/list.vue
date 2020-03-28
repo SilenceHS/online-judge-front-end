@@ -38,6 +38,7 @@
 </style>
 <template>
   <div class="app-home-vue frame-page">
+    <Skeleton active :loading="loading" :rows="5">
     <Row :space="30">
       <Cell :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
         <div class="h-panel">
@@ -128,28 +129,11 @@
                 <p class="gray-color">目前完成比例</p>
                 <p class="dark-color font22">90%</p>
               </Cell>
-              <!-- <p class="clearfix"></p> 
-               <Cell :width="10" class="text-right">
-                <h-circle :percent="99" :stroke-width="10" :size="90" color="green">
-                  <p>
-                    <span class="font28">{{parseInt(123*76/100)}}</span>
-                    <span class="gray-color">/ 1234</span>
-                  </p>
-                </h-circle>
-              </Cell>
-              <Cell :width="14">
-                <p class="gray-color">目前完成比例</p>
-                <p class="dark-color font22">122,332,98</p>
-              </Cell>-->
             </Row>
           </div>
         </div>
 
         <div class="h-panel">
-          <!-- <div class="h-panel-bar">
-            <div class="h-panel-title">答题统计</div>
-            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
-          </div>-->
           <div class="h-panel-body progress-div">
             <p>
               <Progress :percent="99" color="green">
@@ -185,6 +169,7 @@
         </div>
       </Cell>
     </Row>
+    </Skeleton>
   </div>
 </template>
 <script>
@@ -195,11 +180,6 @@ import data3 from "js/datas/data4";
 export default {
   data() {
     return {
-      show: false,
-      border: false,
-      stripe: true,
-      checkbox: false,
-      serial: true,
       loading: false,
       listId: 0,
       datas: [],
@@ -207,12 +187,6 @@ export default {
     };
   },
   methods: {
-    openMore() {
-      this.$router.push({ name: "Chart" });
-    },
-    messageRender(data, index) {
-      return 'style="color: #ff0;"';
-    },
     confirm() {
       this.$Message.success("删除成功");
     },
@@ -237,17 +211,11 @@ export default {
               self.$Loading.close();
             }, 500);
           } else {
-            self.msg = "激活失败~~\n重复激活或激活链接已失效";
-            setTimeout(function() {
-              self.$Loading.close();
-            }, 500);
+              alert("服务器维护中");
           }
         },
         response => {
           alert("服务器维护中");
-          setTimeout(function() {
-            self.$Loading.close();
-          }, 500);
         }
       );
   },

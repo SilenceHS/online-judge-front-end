@@ -93,6 +93,11 @@
                   <div v-if="data.level=='困难'" class="body-text" style="color:#DB584E;">困难</div>
                 </template>
               </TableItem>
+              <TableItem title="标签" align="center" :width="200">
+                <template slot-scope="{data}" >
+                 <div class="body-text"><span v-for="(tag,i) in (data.tag).split(',')" class="h-tag h-tag-blue" :key="i" v-show="tag!=''">{{tag}}</span></div>
+                </template>
+              </TableItem>
             </Table>
           </div>
         </div>
@@ -255,7 +260,8 @@ export default {
           return (
             (value.id).toString().indexOf(this.keyWords)!=-1 ||
             (value.name).indexOf(this.keyWords)!=-1  ||
-            (value.level).indexOf(this.keyWords)!=-1 
+            (value.level).indexOf(this.keyWords)!=-1 ||
+            ((value.tag).indexOf(this.keyWords)!=-1)
           ); //如果包含字符返回true
         });
       }

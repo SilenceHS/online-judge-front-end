@@ -77,7 +77,15 @@ var router = new VueRouter({
 				component: (resolve) => require(['components/list/addQuiz'], resolve),
 				meta: {
 					title: '添加题目',
-					
+					type: 'login'
+				},
+			},
+			{
+				path: 'modifyQuiz',
+				name:"modifyQuiz",
+				component: (resolve) => require(['components/list/modifyQuiz'], resolve),
+				meta: {
+					title: '修改题目',
 					type: 'login'
 				},
 			},

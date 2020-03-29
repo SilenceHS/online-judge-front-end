@@ -73,7 +73,7 @@
                   <router-link
                     class="body-text"
                     style="color:#3787C6"
-                    :to="{path:'/quiz/?quiz='+data.url+'&list='+listUrl}"
+                    :to="{path:'/quiz/?quiz='+data.url+'&list='+listId}"
                   >{{data.name}}</router-link>
                 </template>
               </TableItem>
@@ -180,37 +180,26 @@ import data3 from "js/datas/data4";
 export default {
   data() {
     return {
-      loading: true,
-      listUrl: 0,
-      datas: [],
-      keyWords: "",
-      solvedNum:0
+        loading:true,
+        datas:[]
+      
     };
   },
   methods: {
-    confirm() {
-      this.$Message.success("删除成功");
-    },
+    
   },
   mounted: function() {
     var self = this;
-    self.listUrl = self.$route.query.list;
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
-        "http://"+this.Parms.host+this.Parms.port+"/api/getquizlist/" +
-          self.listUrl +
-          "/" +
-          user.userName
+        "http://"+this.Parms.host+this.Parms.port+"/api/getcourselist/" +
+          user.userName+"/"+user.type
       )
       .then(
         response => {
           if (response.body.status == "200") {
-            self.datas = response.body.quizList;
-             for(var i in self.datas){
-              if(self.datas[i].status=='ACCEPTED')
-                self.solvedNum+=1
-            }
+            self.datas = response.body.courseList;
              setTimeout(function() {
               self.loading=false
             }, 500);
@@ -224,7 +213,7 @@ export default {
       );
   },
    computed: {
-    listData() {
+    courseList() {
       if (this.keyWords == "") {
         return this.datas;
       } else {

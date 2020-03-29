@@ -56,6 +56,15 @@ var router = new VueRouter({
 				},
 			},
 			{
+				path: 'courseManage',
+				component: (resolve) => require(['components/courseList/teacherCourseList'], resolve),
+				meta: {
+					title: '课程管理',
+					type: 'login'
+				},
+			},
+			
+			{
 				path: 'quiz',
 				component: (resolve) => require(['components/list/quiz'], resolve),
 				meta: {

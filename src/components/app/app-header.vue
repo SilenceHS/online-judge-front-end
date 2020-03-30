@@ -118,7 +118,7 @@
         
         
       </div>
-      <div class="app-header-icon-item" v-tooltip content="课程题库" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="课程题库" theme="white" @click="studentCourse">
         <i class="icon-align-left"><b style="font-size:16px;">课程题库</b></i>
       </div>
       <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
@@ -256,6 +256,9 @@ export default {
     },
     courseManage(){
       this.$router.push("/courseManage")
+    },
+    studentCourse(){
+      this.$router.push("/studentCourse")
     }
 
   },

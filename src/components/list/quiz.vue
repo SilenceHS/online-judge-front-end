@@ -126,6 +126,7 @@ require("codemirror/addon/fold/comment-fold.js");
 require("codemirror/addon/edit/matchbrackets");
 require("codemirror/addon/edit/closebrackets");
 require("codemirror/addon/selection/active-line.js");
+require('codemirror/addon/hint/show-hint')
 
 export default {
   data() {
@@ -272,7 +273,11 @@ export default {
         indentUnit: 4
       });
       self.setSize();
+        (self.editor).on('cursorActivity', function () {
+      (self.editor).showHint()
+    })
     }, 500);
+  
 
     this.$Loading("加载中~~");
     var self = this;

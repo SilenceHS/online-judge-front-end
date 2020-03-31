@@ -56,6 +56,24 @@ var router = new VueRouter({
 				},
 			},
 			{
+				path: 'courseManage',
+				component: (resolve) => require(['components/courseList/teacherCourseList'], resolve),
+				meta: {
+					title: '课程管理',
+					type: 'login'
+				},
+			},
+			{
+				path: 'studentCourse',
+				component: (resolve) => require(['components/courseList/studentCourseList'], resolve),
+				meta: {
+					title: '课程题库',
+					type: 'login'
+				},
+			},
+			
+			
+			{
 				path: 'quiz',
 				component: (resolve) => require(['components/list/quiz'], resolve),
 				meta: {
@@ -77,7 +95,15 @@ var router = new VueRouter({
 				component: (resolve) => require(['components/list/addQuiz'], resolve),
 				meta: {
 					title: '添加题目',
-					
+					type: 'login'
+				},
+			},
+			{
+				path: 'modifyQuiz',
+				name:"modifyQuiz",
+				component: (resolve) => require(['components/list/modifyQuiz'], resolve),
+				meta: {
+					title: '修改题目',
 					type: 'login'
 				},
 			},

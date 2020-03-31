@@ -118,7 +118,7 @@
         
         
       </div>
-      <div class="app-header-icon-item" v-tooltip content="课程题库" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="课程题库" theme="white" @click="studentCourse">
         <i class="icon-align-left"><b style="font-size:16px;">课程题库</b></i>
       </div>
       <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
@@ -139,7 +139,7 @@
       <div class="app-header-icon-item" v-tooltip content="学生账号管理" theme="white" @click="showSettingModal">
         <i class="icon-align-left"><b style="font-size:16px;">学生账号管理</b></i>
       </div>
-      <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="courseManage">
         <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
       </div>
       <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
@@ -249,10 +249,16 @@ export default {
       // this.$emit('openSetting');
     },
     officialList() {
-      this.$router.push("/list/?list=1")
+      this.$router.push("/list/?list=loDjDEx")
     },
     officialModify(){
       this.$router.push("/officialModify")
+    },
+    courseManage(){
+      this.$router.push("/courseManage")
+    },
+    studentCourse(){
+      this.$router.push("/studentCourse")
     }
 
   },

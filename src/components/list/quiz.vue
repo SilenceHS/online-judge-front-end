@@ -134,8 +134,8 @@ export default {
       datas: [],
       judging: false,
       mycode: "//TODO",
-      select: "Python3",
-      param: ["Python3", "Java", "C", "C++"],
+      select: "",
+      param: [],
       result: "",
       accepted: false
     };
@@ -292,12 +292,14 @@ export default {
           "/" +
           self.$route.query.quiz +
           "/" +
-          user.username
+          user.userName
       )
       .then(
         response => {
           if (response.body.status == "200") {
             self.datas = response.body.quiz[0].fields;
+            self.param=response.body.quiz[0].fields['language'].split(',')
+            self.select=self.param[0]
             self.accepted = response.body.accepted;
             console.log(self.datas);
             this.$Loading.close();

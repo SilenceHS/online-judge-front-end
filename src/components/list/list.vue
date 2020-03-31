@@ -38,6 +38,7 @@
 </style>
 <template>
   <div class="app-home-vue frame-page">
+    <Skeleton active :loading="loading" :rows="5">
     <Row :space="30">
       <Cell :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
         <div class="h-panel">
@@ -46,7 +47,7 @@
             <div class="h-panel-right">
               <span class="gray-color">总题数</span>
               <i class="h-split"></i>
-              <span class="font20 primary-color">200</span>
+              <span class="font20 primary-color">{{datas.length}}</span>
               <i class="h-split"></i>
               <span class="gray-color"></span>
             </div>
@@ -72,7 +73,7 @@
                   <router-link
                     class="body-text"
                     style="color:#3787C6"
-                    :to="{path:'/quiz/?quiz='+data.url+'&list='+listId}"
+                    :to="{path:'/quiz/?quiz='+data.url+'&list='+listUrl}"
                   >{{data.name}}</router-link>
                 </template>
               </TableItem>
@@ -93,11 +94,16 @@
                   <div v-if="data.level=='困难'" class="body-text" style="color:#DB584E;">困难</div>
                 </template>
               </TableItem>
+              <TableItem title="标签" align="center" :width="200">
+                <template slot-scope="{data}" >
+                 <div class="body-text"><span v-for="(tag,i) in (data.tag).split(',')" class="h-tag h-tag-blue" :key="i" v-show="tag!=''">{{tag}}</span></div>
+                </template>
+              </TableItem>
             </Table>
           </div>
         </div>
       </Cell>
-      <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+      <Cell :xs="6" :sm="6" :md="6" :lg="6" :xl="6"  v-if="datas.length!=0">
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="h-panel-title">完成情况</div>
@@ -112,39 +118,22 @@
           <div class="h-panel-body">
             <Row :space="20">
               <Cell :width="10" class="text-right">
-                <h-circle :percent="76" :stroke-width="10" :size="90">
+                <h-circle :percent="solvedNum/datas.length*100" :stroke-width="10" :size="90">
                   <p>
-                    <span class="font28">{{parseInt(123*76/100)}}</span>
-                    <span class="gray-color">/ 123</span>
+                    <span class="font28">{{solvedNum}}</span>
+                    <span class="gray-color">/ {{datas.length}}</span>
                   </p>
                 </h-circle>
               </Cell>
               <Cell :width="14">
                 <p class="gray-color">目前完成比例</p>
-                <p class="dark-color font22">90%</p>
+                <p class="dark-color font22">{{solvedNum/datas.length*100}}%</p>
               </Cell>
-              <!-- <p class="clearfix"></p> 
-               <Cell :width="10" class="text-right">
-                <h-circle :percent="99" :stroke-width="10" :size="90" color="green">
-                  <p>
-                    <span class="font28">{{parseInt(123*76/100)}}</span>
-                    <span class="gray-color">/ 1234</span>
-                  </p>
-                </h-circle>
-              </Cell>
-              <Cell :width="14">
-                <p class="gray-color">目前完成比例</p>
-                <p class="dark-color font22">122,332,98</p>
-              </Cell>-->
             </Row>
           </div>
         </div>
 
         <div class="h-panel">
-          <!-- <div class="h-panel-bar">
-            <div class="h-panel-title">答题统计</div>
-            <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">200</span><i class="h-split"></i><span class="gray-color"></span></div>
-          </div>-->
           <div class="h-panel-body progress-div">
             <p>
               <Progress :percent="99" color="green">
@@ -180,6 +169,7 @@
         </div>
       </Cell>
     </Row>
+    </Skeleton>
   </div>
 </template>
 <script>
@@ -190,37 +180,26 @@ import data3 from "js/datas/data4";
 export default {
   data() {
     return {
-      show: false,
-      border: false,
-      stripe: true,
-      checkbox: false,
-      serial: true,
-      loading: false,
-      listId: 0,
+      loading: true,
+      listUrl: 0,
       datas: [],
-      keyWords: ""
+      keyWords: "",
+      solvedNum:0
     };
   },
   methods: {
-    openMore() {
-      this.$router.push({ name: "Chart" });
-    },
-    messageRender(data, index) {
-      return 'style="color: #ff0;"';
-    },
     confirm() {
       this.$Message.success("删除成功");
     },
   },
   mounted: function() {
-    this.$Loading("加载中~~");
     var self = this;
-    self.listId = self.$route.query.list;
+    self.listUrl = self.$route.query.list;
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
         "http://"+this.Parms.host+this.Parms.port+"/api/getquizlist/" +
-          self.listId +
+          self.listUrl +
           "/" +
           user.userName
       )
@@ -228,21 +207,19 @@ export default {
         response => {
           if (response.body.status == "200") {
             self.datas = response.body.quizList;
+             for(var i in self.datas){
+              if(self.datas[i].status=='ACCEPTED')
+                self.solvedNum+=1
+            }
              setTimeout(function() {
-              self.$Loading.close();
+              self.loading=false
             }, 500);
           } else {
-            self.msg = "激活失败~~\n重复激活或激活链接已失效";
-            setTimeout(function() {
-              self.$Loading.close();
-            }, 500);
+              alert("服务器维护中");
           }
         },
         response => {
           alert("服务器维护中");
-          setTimeout(function() {
-            self.$Loading.close();
-          }, 500);
         }
       );
   },
@@ -255,7 +232,8 @@ export default {
           return (
             (value.id).toString().indexOf(this.keyWords)!=-1 ||
             (value.name).indexOf(this.keyWords)!=-1  ||
-            (value.level).indexOf(this.keyWords)!=-1 
+            (value.level).indexOf(this.keyWords)!=-1 ||
+            ((value.tag).indexOf(this.keyWords)!=-1)
           ); //如果包含字符返回true
         });
       }

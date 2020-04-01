@@ -67,7 +67,7 @@
               v-tooltip
               placement="bottom"
               content="添加课程"
-              @click="createCourse"
+              @click="selectCourse"
             ></Button>
             <Modal v-model="modifyOpened">
               <div slot="header">修改课程</div>
@@ -81,6 +81,7 @@
 
                 <span style="font-size:18px;">任教老师:</span>
                 <input type="text" v-model="teacherName" />
+                
               </div>
               <div slot="footer">
                 <Button color="primary" @click="modifyConfirm">确认</Button>
@@ -88,15 +89,17 @@
               </div>
             </Modal>
 
-            <Modal v-model="createOpened">
+            <Modal v-model="selectOpened">
               <div slot="header">添加课程</div>
               <div>
                 <span style="font-size:18px;">请输入课程ID号:</span>
-                <input type="text" v-model="name"/>
+                <input type="text" v-model="createUrl"/><br/>
+                <span style="font-size:18px;">请选课的学生姓名:</span>
+                <input type="text" v-model="createStudentName"/>
               </div>
               <div slot="footer">
-                <Button color="primary" @click="createConfirm">确认</Button>
-                <Button @click="createClose">关闭</Button>
+                <Button color="primary" @click="selectConfirm">确认</Button>
+                <Button @click="selectClose">关闭</Button>
               </div>
             </Modal>
           </div>
@@ -203,36 +206,36 @@ export default {
       loading: false,
       keyWords: "",
       datas: [],
-      modifyOpened: false,
-      createOpened: false,
-      modifyIndex: 0,
-      name: "",
-      detail: "",
-      teacherName: ""
+      // modifyOpened: false,
+      selectOpened: false,
+      createUrl:'',
+     createStudentName:'',
+      // modifyIndex: 0,
+      // name: "",
+      // detail: "",
+      // teacherName: ""
     };
   },
   methods: {
-    modifyClose() {
+  //   modifyClose() {
         
-      this.modifyOpened = false;
-      this.name="",
-      this.detail="",
-      this.teacherName=""
+  //     this.modifyOpened = false;
+  //     this.name="",
+  //     this.detail="",
+  //     this.teacherName=""
+  //   },
+    selectClose() {
+      this.selectOpened = false;
+      this.createUrl=""
+      this.createStudentName=""
     },
-    createClose() {
-      this.createOpened = false;
-      this.name="",
-      this.detail="",
-      this.teacherName=""
-    },
-    createConfirm() {
+    selectConfirm() {
       this.$http
         .post(
-          "http://" + this.Parms.host + this.Parms.port + "/api/addcourse/",
+          "http://" + this.Parms.host + this.Parms.port + "/api/selectcourse/",
           {
-            coursename: this.name,
-            detail: this.detail,
-            teachername: this.teacherName,
+            url: this.createUrl,
+            studentname: this.createStudentName,
             username:JSON.parse(localStorage.getItem("User")).userName
           },
           { emulateJSON: true }
@@ -241,8 +244,16 @@ export default {
           response => {
             if (response.body.status == "200") {
               this.$Message.success("添加成功");
-              this.createOpened = false;
+              this.selectOpened = false;
               this.datas.push(response.body.newcourse)
+              this.createUrl=""
+      this.createStudentName=""
+            }
+            else if(response.body.status == "404"){
+              this.$Message.error("课程不存在");
+            }
+            else if(response.body.status == "403"){
+              this.$Message.error("已经添加该课程!请勿重复添加!");
             }
           },
           response => {
@@ -250,44 +261,44 @@ export default {
           }
         );
     },
-    modifyConfirm() {
-      this.$http
-        .post(
-          "http://" + this.Parms.host + this.Parms.port + "/api/modifycourse/",
-          {
-            coursename: this.name,
-            detail: this.detail,
-            teachername: this.teacherName,
-            url:this.datas[this.modifyIndex].url
-          },
-          { emulateJSON: true }
-        )
-        .then(
-          response => {
-            if (response.body.status == "200") {
-              this.$Message.success("修改成功");
-              this.modifyOpened = false;
-              this.datas[this.modifyIndex].coursename = this.name;
-              this.datas[this.modifyIndex].detail = this.detail;
-              this.datas[this.modifyIndex].teachername = this.teacherName;
-            }
-          },
-          response => {
-            alert("服务器维护中");
-          }
-        );
-    },
-    modifyCourse(url) {
-      for (var i = 0; i < this.datas.length; i++) {
-        if (this.datas[i].url == url) this.modifyIndex = i;
-      }
-      this.name = this.datas[this.modifyIndex].coursename;
-      this.detail = this.datas[this.modifyIndex].detail;
-      this.teacherName = this.datas[this.modifyIndex].teachername;
-      this.modifyOpened = true;
-    },
-    createCourse(){
-      this.createOpened = true;
+  //   modifyConfirm() {
+  //     this.$http
+  //       .post(
+  //         "http://" + this.Parms.host + this.Parms.port + "/api/modifycourse/",
+  //         {
+  //           coursename: this.name,
+  //           detail: this.detail,
+  //           teachername: this.teacherName,
+  //           url:this.datas[this.modifyIndex].url
+  //         },
+  //         { emulateJSON: true }
+  //       )
+  //       .then(
+  //         response => {
+  //           if (response.body.status == "200") {
+  //             this.$Message.success("修改成功");
+  //             this.modifyOpened = false;
+  //             this.datas[this.modifyIndex].coursename = this.name;
+  //             this.datas[this.modifyIndex].detail = this.detail;
+  //             this.datas[this.modifyIndex].teachername = this.teacherName;
+  //           }
+  //         },
+  //         response => {
+  //           alert("服务器维护中");
+  //         }
+  //       );
+  //   },
+  //   modifyCourse(url) {
+  //     for (var i = 0; i < this.datas.length; i++) {
+  //       if (this.datas[i].url == url) this.modifyIndex = i;
+  //     }
+  //     this.name = this.datas[this.modifyIndex].coursename;
+  //     this.detail = this.datas[this.modifyIndex].detail;
+  //     this.teacherName = this.datas[this.modifyIndex].teachername;
+  //     this.modifyOpened = true;
+  //   },
+    selectCourse(){
+      this.selectOpened = true;
   },
   deleteCourseConfirm(url){
       for (var i = 0; i < this.datas.length; i++) {
@@ -295,9 +306,10 @@ export default {
             var index=i
             this.$http
         .post(
-          "http://" + this.Parms.host + this.Parms.port + "/api/deletecourse/",
+          "http://" + this.Parms.host + this.Parms.port + "/api/deleteselectedcourse/",
           {
-            url:url
+            url:url,
+            username:JSON.parse(localStorage.getItem("User")).userName
           },
           { emulateJSON: true }
         )

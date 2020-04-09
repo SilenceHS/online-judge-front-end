@@ -43,7 +43,7 @@
         <Cell :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
           <div class="h-panel">
             <div class="h-panel-bar">
-              <div class="h-panel-title">官方题库</div>
+              <div class="h-panel-title">{{courseName}}</div>
               <div class="h-panel-right">
                 <span class="gray-color">总题数</span>
                 <i class="h-split"></i>
@@ -209,7 +209,8 @@ export default {
       listUrl: "loDjDEx",
       datas: "",
       keyWords: "",
-      solvedNum:0
+      solvedNum:0,
+      courseName:""
     };
   },
   methods: {
@@ -243,7 +244,7 @@ export default {
         );
     },
     addQuiz() {
-      this.$router.push({ path: "/addQuiz", query: { courseurl: this.listUrl } });
+      this.$router.push({ path: "/addQuiz", query: { courseurl: this.$route.query.courseurl } });
     },
     modifyQuiz(quizurl) {
       this.$router.push({
@@ -254,7 +255,7 @@ export default {
   },
   mounted: function() {
     var self = this;
-    self.listUrl = "loDjDEx";
+    self.listUrl =this.$route.query.courseurl;
     var user = JSON.parse(localStorage.getItem("User"));
     this.$http
       .get(
@@ -269,6 +270,7 @@ export default {
       .then(
         response => {
           if (response.body.status == "200") {
+            self.courseName=response.body.coursename
             self.datas = response.body.quizList;
             for(var i in self.datas){
               if(self.datas[i].status=='ACCEPTED')

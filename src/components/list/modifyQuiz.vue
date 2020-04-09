@@ -211,7 +211,7 @@ export default {
               language: this.language.toString(),
               level: this.level,
               tag: this.tag.toString(),
-              courseid: this.$route.query.courseid,
+              courseurl: this.$route.query.courseurl,
               url:this.$route.query.quizurl
             },
             { emulateJSON: true }
@@ -219,7 +219,7 @@ export default {
           .then(
             response => {
               if (response.body.status == "200") {
-                this.$Message["success"](`添加成功!`);
+                this.$Message["success"](`修改成功!`);
                 setTimeout(function() {
                   self.$router.back(-1);
                 }, 1000);
@@ -247,7 +247,7 @@ export default {
           this.Parms.host +
           this.Parms.port +
           "/api/getmodifyquiz/" +
-          self.$route.query.courseid +
+          self.$route.query.courseurl +
           "/" +
           self.$route.query.quizurl +
           "/" +

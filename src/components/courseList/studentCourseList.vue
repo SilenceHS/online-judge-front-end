@@ -70,17 +70,11 @@
               @click="selectCourse"
             ></Button>
             <Modal v-model="modifyOpened">
-              <div slot="header">修改课程</div>
+              <div slot="header">修改名字</div>
               <div>
-                <span style="font-size:18px;">课程名称:</span>
+                <span style="font-size:18px;">我的名字:</span>
                 <input type="text" v-model="name" />
                 <br />
-                <span style="font-size:18px;">课程简介:</span>
-                <input type="text" v-model="detail" />
-                <br />
-
-                <span style="font-size:18px;">任教老师:</span>
-                <input type="text" v-model="teacherName" />
                 
               </div>
               <div slot="footer">
@@ -137,9 +131,12 @@
                   <br />
                   <span style="font-size:18px;font-weight:bold">课程ID:</span>
                   <span style="font-size:18px">{{i.url}}</span>
+                   <br />
+                  <span style="font-size:18px;font-weight:bold">我的名字:</span>
+                  <span style="font-size:18px">{{i.name}}</span>
                 </div>
           <div class="progress-div" >
-            <Progress :percent="88" color="blue"><span>已经完成0题</span></Progress>
+            <Progress :percent="i.solvednum/i.quiznum*100" color="blue"></Progress>
           </div>
               
               </Row>
@@ -150,8 +147,8 @@
               style="display:inline-block;margin:10px;margin-right:0px;margin-left:25px"
               v-tooltip
               placement="bottom"
-              content="修改课程"
-              @click="modifyCourse(i.url)"
+              content="修改名字"
+              @click="modifyName(i.url)"
             ></Button>
             <Button
               color="blue"
@@ -161,24 +158,10 @@
               placement="bottom"
               content="题库详情"
             ></Button>
-            <Button
-              color="blue"
-              icon="h-icon-task"
-              style="display:inline-block;margin:10px;margin-right:0px;margin-left:0px"
-              v-tooltip
-              placement="bottom"
-              content="复制课程ID"
-            ></Button>
-            <Button
-              color="blue"
-              icon="h-icon-users"
-              style="display:inline-block;margin:10px;margin-left:0px"
-              v-tooltip
-              placement="bottom"
-              content="学生答题情况"
-            ></Button>
+        
+           
             <div style="display:inline-block;float:right;margin:10px;margin-right:25px;">
-            <Poptip content="删除课程会导致学生答题记录,课程题库题等所有信息删除，是否永久删除？" @confirm="deleteCourseConfirm(i.url)">
+            <Poptip content="删除课程会导致答题记录排名等所有信息删除，是否永久删除？" @confirm="deleteCourseConfirm(i.url)">
             <Button
               color="red"
               icon="h-icon-trash"
@@ -210,20 +193,18 @@ export default {
       selectOpened: false,
       createUrl:'',
      createStudentName:'',
-      // modifyIndex: 0,
-      // name: "",
+       modifyIndex: 0,
+       name: "",
       // detail: "",
       // teacherName: ""
     };
   },
   methods: {
-  //   modifyClose() {
+    modifyClose() {
         
-  //     this.modifyOpened = false;
-  //     this.name="",
-  //     this.detail="",
-  //     this.teacherName=""
-  //   },
+      this.modifyOpened = false;
+      this.name=""
+    },
     selectClose() {
       this.selectOpened = false;
       this.createUrl=""
@@ -247,7 +228,7 @@ export default {
               this.selectOpened = false;
               this.datas.push(response.body.newcourse)
               this.createUrl=""
-      this.createStudentName=""
+              this.createStudentName=""
             }
             else if(response.body.status == "404"){
               this.$Message.error("课程不存在");
@@ -261,42 +242,37 @@ export default {
           }
         );
     },
-  //   modifyConfirm() {
-  //     this.$http
-  //       .post(
-  //         "http://" + this.Parms.host + this.Parms.port + "/api/modifycourse/",
-  //         {
-  //           coursename: this.name,
-  //           detail: this.detail,
-  //           teachername: this.teacherName,
-  //           url:this.datas[this.modifyIndex].url
-  //         },
-  //         { emulateJSON: true }
-  //       )
-  //       .then(
-  //         response => {
-  //           if (response.body.status == "200") {
-  //             this.$Message.success("修改成功");
-  //             this.modifyOpened = false;
-  //             this.datas[this.modifyIndex].coursename = this.name;
-  //             this.datas[this.modifyIndex].detail = this.detail;
-  //             this.datas[this.modifyIndex].teachername = this.teacherName;
-  //           }
-  //         },
-  //         response => {
-  //           alert("服务器维护中");
-  //         }
-  //       );
-  //   },
-  //   modifyCourse(url) {
-  //     for (var i = 0; i < this.datas.length; i++) {
-  //       if (this.datas[i].url == url) this.modifyIndex = i;
-  //     }
-  //     this.name = this.datas[this.modifyIndex].coursename;
-  //     this.detail = this.datas[this.modifyIndex].detail;
-  //     this.teacherName = this.datas[this.modifyIndex].teachername;
-  //     this.modifyOpened = true;
-  //   },
+    modifyConfirm() {
+      this.$http
+        .post(
+          "http://" + this.Parms.host + this.Parms.port + "/api/modifystudentcoursename/",
+          {
+            name: this.name,
+            url:this.datas[this.modifyIndex].url,
+            username:JSON.parse(localStorage.getItem("User")).userName
+          },
+          { emulateJSON: true }
+        )
+        .then(
+          response => {
+            if (response.body.status == "200") {
+              this.$Message.success("修改成功");
+              this.modifyOpened = false;
+              this.datas[this.modifyIndex].name = this.name;
+            }
+          },
+          response => {
+            alert("服务器维护中");
+          }
+        );
+    },
+    modifyName(url) {
+      for (var i = 0; i < this.datas.length; i++) {
+        if (this.datas[i].url == url) this.modifyIndex = i;
+      }
+      this.name = this.datas[this.modifyIndex].name;
+      this.modifyOpened = true;
+    },
     selectCourse(){
       this.selectOpened = true;
   },

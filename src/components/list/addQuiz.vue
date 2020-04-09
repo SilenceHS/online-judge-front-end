@@ -173,7 +173,7 @@ export default {
             language:(this.language).toString(),
             level:this.level,
             tag:(this.tag).toString(),
-            courseid:this.$route.query.courseid,
+            courseurl:this.$route.query.courseurl,
           },
           { emulateJSON: true }
         )

@@ -156,6 +156,7 @@
               v-tooltip
               placement="bottom"
               content="题库详情"
+              @click="teacherList(i.url)"
             ></Button>
             <Button
               color="blue"
@@ -164,6 +165,9 @@
               v-tooltip
               placement="bottom"
               content="复制课程ID"
+              v-clipboard:copy="i.url"
+              v-clipboard:success="onCopy"
+              v-clipboard:error="onError"
             ></Button>
             <Button
               color="blue"
@@ -313,6 +317,16 @@ export default {
         );
         }  
       }
+    },
+    onCopy(e){
+      this.$Message.success("复制成功");
+    },
+    // 复制失败
+    onError(e){
+      this.$Message.error("复制失败，请手动复制");
+    },
+    teacherList(courseUrl){
+      this.$router.push({ path: "/teacherList", query: { courseurl: courseUrl } });
     }
   },
   

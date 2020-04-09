@@ -126,7 +126,6 @@ require("codemirror/addon/fold/comment-fold.js");
 require("codemirror/addon/edit/matchbrackets");
 require("codemirror/addon/edit/closebrackets");
 require("codemirror/addon/selection/active-line.js");
-require('codemirror/addon/hint/show-hint')
 
 export default {
   data() {
@@ -268,7 +267,7 @@ export default {
         readOnly: false,
         matchBrackets: true,
         autoCloseBrackets: true,
-        smartIndent: true,
+        smartIndent: false,
         styleActiveLine: true,
         indentUnit: 4
       });

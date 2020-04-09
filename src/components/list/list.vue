@@ -214,8 +214,13 @@ export default {
              setTimeout(function() {
               self.loading=false
             }, 500);
-          } else {
-              alert("服务器维护中");
+          } else if(response.body.status == "403"){
+              alert("您没有选该课程！");
+               self.$router.back(-1);
+
+          }
+          else{
+alert("服务器维护中");
           }
         },
         response => {

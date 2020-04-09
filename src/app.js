@@ -16,6 +16,8 @@ import 'codemirror/lib/codemirror.css'
 import VueRouter from 'vue-router';
 import vueResource from "vue-resource"
 import Parms from "js/common/Parms"
+import VueClipboard from 'vue-clipboard2'
+
 require('./css/app.less');
 
 // 开发环境判断
@@ -31,6 +33,7 @@ Vue.use(VueRouter);
 Vue.use(animated);
 Vue.use(vueResource);
 Vue.use(VueCodeMirror)
+Vue.use(VueClipboard)
 Vue.prototype.Parms = Parms
 // const router = routerConfig();
 var router = new VueRouter({
@@ -104,6 +107,14 @@ var router = new VueRouter({
 				component: (resolve) => require(['components/list/modifyQuiz'], resolve),
 				meta: {
 					title: '修改题目',
+					type: 'login'
+				},
+			},
+			{
+				path: 'teacherList',
+				component: (resolve) => require(['components/list/teacherList'], resolve),
+				meta: {
+					title: '课程题目管理',
 					type: 'login'
 				},
 			},

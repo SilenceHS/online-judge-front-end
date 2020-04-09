@@ -157,6 +157,7 @@
               v-tooltip
               placement="bottom"
               content="题库详情"
+              @click="studentList(i.url)"
             ></Button>
         
            
@@ -302,6 +303,9 @@ export default {
         );
         }  
       }
+    },
+    studentList(url){
+      this.$router.push("/list/?list="+url)
     }
   },
   

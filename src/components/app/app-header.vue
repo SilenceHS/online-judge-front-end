@@ -136,9 +136,6 @@
       <div class="app-header-icon-item" v-tooltip content="官方题库" theme="white" @click="officialList">
         <i class="icon-book"><b style="font-size:16px;">官方题库</b></i>
       </div>
-      <div class="app-header-icon-item" v-tooltip content="学生账号管理" theme="white" @click="showSettingModal">
-        <i class="icon-align-left"><b style="font-size:16px;">学生账号管理</b></i>
-      </div>
       <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="courseManage">
         <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
       </div>

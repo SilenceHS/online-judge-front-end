@@ -176,6 +176,7 @@
               v-tooltip
               placement="bottom"
               content="学生答题情况"
+              @click="studentList(i.url)"
             ></Button>
             <div style="display:inline-block;float:right;margin:10px;margin-right:25px;">
             <Poptip content="删除课程会导致学生答题记录,课程题库题等所有信息删除，是否永久删除？" @confirm="deleteCourseConfirm(i.url)">
@@ -327,6 +328,10 @@ export default {
     },
     teacherList(courseUrl){
       this.$router.push({ path: "/teacherList", query: { courseurl: courseUrl } });
+    },
+    studentList(courseUrl)
+    {
+      this.$router.push({ path: "/studentRank", query: { courseurl: courseUrl } });
     }
   },
   

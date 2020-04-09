@@ -118,6 +118,16 @@ var router = new VueRouter({
 					type: 'login'
 				},
 			},
+			{
+				path: 'studentRank',
+				component: (resolve) => require(['components/list/studentRank'], resolve),
+				meta: {
+					title: '排名汇总',
+					type: 'login'
+				},
+			},
+
+			
 
 		]
 	},

@@ -227,6 +227,7 @@ export default {
             if (response.body.status == "200") {
               this.$Message.success("添加成功");
               this.selectOpened = false;
+              console.log(response.body.newcourse)
               this.datas.push(response.body.newcourse)
               this.createUrl=""
               this.createStudentName=""

@@ -50,6 +50,7 @@
             <p><span slot="title"><strong>MLE(Memory Limit Exceeded)：</strong>程序运行内存超过了题目限制</span></p>
             <p><span slot="title"><strong>RE(Runtime Error)：</strong>程序运行过程中出错</span></p>
             <p><span slot="title"><strong>OLE(Output Limit Exceeded)：</strong>程序的输出已经超出了这个题目的输出限制</span></p>
+            <p><span slot="title"><strong>NZEC(Non-zero Exit Code)：</strong>程序非零返回,一般为异常退出</span></p>
           </div>
         </div>
       </Cell>
@@ -68,6 +69,7 @@
             <p><Progress :percent="mleCount/allCount*100" color="blue"><span slot="title">MLE</span><span slot="text">{{mleCount}}个</span></Progress></p>
             <p><Progress :percent="reCount/allCount*100" color="blue"><span slot="title">RE</span><span slot="text">{{reCount}}个</span></Progress></p>
             <p><Progress :percent="oleCount/allCount*100" color="blue"><span slot="title">OLE</span><span slot="text">{{oleCount}}个</span></Progress></p>
+            <p><Progress :percent="nzeCount/allCount*100" color="blue"><span slot="title">NZEC</span><span slot="text">{{oleCount}}个</span></Progress></p>
           </div>
         </div>
       </Cell>
@@ -96,6 +98,7 @@ export default {
       mleCount:0,
       reCount:0,
       oleCount:0,
+      nzeCount:0,
     };
   },
   methods: {
@@ -131,6 +134,7 @@ export default {
                 self.mleCount=response.body.mleCount
                 self.reCount=response.body.reCount
                 self.oleCount=response.body.oleCount
+                self.nzeCount=response.body.nzeCount
               }
             },
             response => {

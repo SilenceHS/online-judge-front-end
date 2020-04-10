@@ -79,7 +79,7 @@
               </TableItem>
               <TableItem title="解题人数" align="center" :width="100">
                 <template slot-scope="{data}">
-                  <div class="body-text">{{data.solve}}</div>
+                  <div class="body-text">{{data.solved}}</div>
                 </template>
               </TableItem>
               <TableItem title="通过率" align="center" :width="100">
@@ -107,13 +107,6 @@
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="h-panel-title">完成情况</div>
-            <div class="h-panel-right">
-              <span class="gray-color">当前排名</span>
-              <i class="h-split"></i>
-              <span class="font20 primary-color">1</span>
-              <i class="h-split"></i>
-              <span class="gray-color"></span>
-            </div>
           </div>
           <div class="h-panel-body">
             <Row :space="20">

@@ -134,6 +134,14 @@ var router = new VueRouter({
 					type: 'login'
 				},
 			},
+			{
+				path: 'historyList',
+				component: (resolve) => require(['components/list/history'], resolve),
+				meta: {
+					title: '历史记录',
+					type: 'login'
+				},
+			},
 
 			
 

@@ -115,9 +115,6 @@
       <div class="app-header-icon-item" v-tooltip content="课程题库" theme="white" @click="studentCourse">
         <i class="icon-align-left"><b style="font-size:16px;">课程题库</b></i>
       </div>
-      <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
-        <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
-      </div>
       <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="info">
         <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
       </div>
@@ -232,9 +229,10 @@ export default {
       //   this.$router.replace({ name: 'Login' });
         localStorage.clear();
         this.$router.replace("/login");
-       } //else {
-      //   this.$router.push({ name: 'AccountBasic' });
-      // }
+       } 
+       if (data == 'info')  {
+   this.$router.push("/info")
+         }
     },
     showSettingModal() {
       // this.$emit('openSetting');

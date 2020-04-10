@@ -93,6 +93,7 @@
             <button
               class="h-btn h-btn-text-blue h-btn-transparent;"
               style="margin-top:10px;float:right"
+              @click="historyList"
             >提交历史</button>
             <Button
               color="blue"
@@ -250,6 +251,9 @@ export default {
             }
           );
       }, 2000);
+    },
+    historyList(){
+      this.$router.push({ path: "/historyList", query: { quiz: this.$route.query.quiz } });
     }
   },
   updated: function() {

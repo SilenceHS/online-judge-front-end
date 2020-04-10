@@ -94,15 +94,9 @@
     <div class="float-right app-header-info">
      <!-- <AutoComplete :showDropdownWhenNoResult="false" v-model="searchText" config="globalSearch" placeholder="全局搜索.."></AutoComplete> -->
        
-      <div class="app-header-icon-item" v-tooltip content="系统布局配置" theme="white" @click="showSettingModal">
-        <i class="icon-content-left"></i>
-      </div>
      <!-- <appHeaderMessage></appHeaderMessage> -->
       <div class="app-header-icon-item" v-tooltip content="GitHub" theme="white" @click="goGithub">
         <i class="h-icon-github"></i>
-      </div>
-      <div class="app-header-icon-item" v-tooltip content="教学文档" theme="white" @click="goBook">
-        <i class="h-icon-help"></i>
       </div>
       <DropdownMenu className="app-header-dropdown" trigger="hover" offset="0,5" :width="150" placement="bottom-end" :datas="infoMenu" @onclick="trigger">
         <Avatar :src="User.avatar_url" :width="30"><span>{{User.userName}}</span></Avatar>
@@ -124,7 +118,7 @@
       <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="showSettingModal">
         <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
       </div>
-      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="info">
         <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
       </div>
       </div>
@@ -139,7 +133,7 @@
       <div class="app-header-icon-item" v-tooltip content="课程管理" theme="white" @click="courseManage">
         <i class="icon-paper"><b style="font-size:16px;">课程管理</b></i>
       </div>
-      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="info">
         <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
       </div>
       </div>
@@ -157,7 +151,7 @@
       <div class="app-header-icon-item" v-tooltip content="判题管理" theme="white" @click="showSettingModal">
         <i class="icon-paper"><b style="font-size:16px;">判题管理</b></i>
       </div>
-      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="showSettingModal">
+      <div class="app-header-icon-item" v-tooltip content="个人信息" theme="white" @click="info">
         <i class="icon-cog"><b style="font-size:16px;">个人信息</b></i>
       </div>
       </div>
@@ -256,6 +250,9 @@ export default {
     },
     studentCourse(){
       this.$router.push("/studentCourse")
+    },
+    info(){
+ this.$router.push("/info")
     }
 
   },

@@ -56,7 +56,7 @@
             </div>
             <div>
               <Table :datas="listData">
-                <TableItem title="姓名" align="center" :width="100">
+                <TableItem title="姓名" align="center" :width="30">
                   <template slot-scope="{data}">{{data.studentName}}</template>
                 </TableItem>
 
@@ -68,9 +68,17 @@
                   </template>
                 </TableItem>
 
-                <TableItem title="解题个数" align="center" :width="100">
+                <TableItem title="解题个数" align="center" :width="50">
                   <template slot-scope="{data}">
                     <div class="body-text">{{data.solved}}</div>
+                  </template>
+                </TableItem>
+
+                 <TableItem title="操作" align="center" :width="50">
+                  <template slot-scope="{data}">
+                    <Poptip content="会将密码重置为123456是否继续？" @confirm="resetPass(data.studentId)">
+                      <Button color="blue">重置密码</Button>
+                    </Poptip>
                   </template>
                 </TableItem>
               </Table>
@@ -105,6 +113,26 @@ export default {
           "/api/getExcel/" +
           this.$route.query.courseurl
     a.click();
+    },
+    resetPass(id){
+       this.$http
+        .post(
+          "http://" + this.Parms.host + this.Parms.port + "/api/resetPass/",
+          {
+            id:id
+          },
+          { emulateJSON: true }
+        )
+        .then(
+          response => {
+            if (response.body.status == "200") {
+              this.$Message.success("重置成功");
+            }
+          },
+          response => {
+            alert("服务器维护中");
+          }
+        );
     }
   },
   mounted: function() {
@@ -126,6 +154,7 @@ export default {
           if (response.body.status == "200") {
             self.showType = response.body.showtype;
             self.listData = response.body.studentranklist;
+            console.log(self.listData)
             self.courseName = response.body.coursename;
             self.allNum = response.body.allnum;
             setTimeout(function() {

@@ -133,7 +133,7 @@
           </div>
         </div>
 
-        <div class="h-panel">
+        <!-- <div class="h-panel">
           <div class="h-panel-body progress-div">
             <p>
               <Progress :percent="99" color="green">
@@ -166,7 +166,7 @@
               </Progress>
             </p>
           </div>
-        </div>
+        </div> -->
       </Cell>
     </Row>
     </Skeleton>

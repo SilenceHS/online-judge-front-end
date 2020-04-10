@@ -36,21 +36,38 @@
 <template>
   <div class="app-home-vue frame-page">
     <Row :space="30">
-      <Cell :xs='24' :sm='24' :md='24' :lg='24' :xl='24'>
+      <Cell :xs='24' :sm='24' :md='24' :lg='9' :xl='9'>
+        <div class="h-panel">
+          <div class="h-panel-bar">
+            <div class="h-panel-title">判题结果说明</div>
+          </div>
+          <div class="h-panel-body progress-div">
+            <p><span slot="title"><strong>AC(Accepted)：</strong>完全正确！</span></p>
+            <p><span slot="title"><strong>WA(Wrong Answer)：</strong>某个测试数据的输出答案不正确</span></p>
+            <p><span slot="title"><strong>CE(Compilation Error)：</strong>编译失败，无法编译你的程序</span></p>
+            <p><span slot="title"><strong>PE(Presentation Error)：</strong>答案正确，但是结果格式不正确，请检查空格和换行</span></p>
+            <p><span slot="title"><strong>TLE(Time Limit Exceeded)：</strong>程序运行时间超过了题目限制</span></p>
+            <p><span slot="title"><strong>MLE(Memory Limit Exceeded)：</strong>程序运行内存超过了题目限制</span></p>
+            <p><span slot="title"><strong>RE(Runtime Error)：</strong>程序运行过程中出错</span></p>
+            <p><span slot="title"><strong>OLE(Output Limit Exceeded)：</strong>程序的输出已经超出了这个题目的输出限制</span></p>
+          </div>
+        </div>
+      </Cell>
+       <Cell :xs='24' :sm='24' :md='24' :lg='15' :xl='15'>
         <div class="h-panel">
           <div class="h-panel-bar">
             <div class="h-panel-title">答题统计</div>
             <div class="h-panel-right"><span class="gray-color">总共答题</span><i class="h-split"></i><span class="font20 primary-color">{{allCount}}</span><i class="h-split"></i><span class="gray-color"></span></div>
           </div>
           <div class="h-panel-body progress-div">
-            <p><Progress :percent="99" color="blue"><span slot="title">AC</span><span slot="text">{{acCount}}个</span></Progress></p>
-            <p><Progress :percent="88" color="blue"><span slot="title">WA</span><span slot="text">{{waCount}}个</span></Progress></p>
-            <p><Progress :percent="55" color="red"><span slot="title">CE</span><span slot="text">{{ceCount}}个</span></Progress></p>
-            <p><Progress :percent="77" color="blue"><span slot="title">PE</span><span slot="text">{{peCount}}个</span></Progress></p>
-            <p><Progress :percent="66" color="yellow"><span slot="title">TLE</span><span slot="text">{{tleCount}}个</span></Progress></p>
-            <p><Progress :percent="55" color="red"><span slot="title">MLE</span><span slot="text">{{mleCount}}个</span></Progress></p>
-            <p><Progress :percent="77" color="blue"><span slot="title">RE</span><span slot="text">{{reCount}}个</span></Progress></p>
-            <p><Progress :percent="88" color="blue"><span slot="title">OLE</span><span slot="text">{{oleCount}}个</span></Progress></p>
+            <p><Progress :percent="acCount/allCount*100" color="green"><span slot="title">AC</span><span slot="text">{{acCount}}个</span></Progress></p>
+            <p><Progress :percent="waCount/allCount*100" color="blue"><span slot="title">WA</span><span slot="text">{{waCount}}个</span></Progress></p>
+            <p><Progress :percent="ceCount/allCount*100" color="blue"><span slot="title">CE</span><span slot="text">{{ceCount}}个</span></Progress></p>
+            <p><Progress :percent="peCount/allCount*100" color="blue"><span slot="title">PE</span><span slot="text">{{peCount}}个</span></Progress></p>
+            <p><Progress :percent="tleCount/allCount*100" color="blue"><span slot="title">TLE</span><span slot="text">{{tleCount}}个</span></Progress></p>
+            <p><Progress :percent="mleCount/allCount*100" color="blue"><span slot="title">MLE</span><span slot="text">{{mleCount}}个</span></Progress></p>
+            <p><Progress :percent="reCount/allCount*100" color="blue"><span slot="title">RE</span><span slot="text">{{reCount}}个</span></Progress></p>
+            <p><Progress :percent="oleCount/allCount*100" color="blue"><span slot="title">OLE</span><span slot="text">{{oleCount}}个</span></Progress></p>
           </div>
         </div>
       </Cell>
@@ -92,7 +109,34 @@ export default {
       this.$router.replace("/login");
   },
   mounted:function() {
-
+    var self=this
+    this.$http
+          .post(
+            "http://" + this.Parms.host + this.Parms.port + "/api/getMainCount/",
+            {
+              username: JSON.parse(localStorage.getItem("User")).userName,
+            },
+            { emulateJSON: true }
+          )
+          .then(
+            response => {
+              if (response.body.status == "200") {
+                console.log(response.body)
+                self.allCount=response.body.allCount
+                self.acCount=response.body.acCount
+                self.waCount=response.body.waCount
+                self.ceCount=response.body.ceCount
+                self.peCount=response.body.peCount
+                self.tleCount=response.body.tleCount
+                self.mleCount=response.body.mleCount
+                self.reCount=response.body.reCount
+                self.oleCount=response.body.oleCount
+              }
+            },
+            response => {
+              alert("服务器维护中");
+            }
+          );
   }
 };
 </script>

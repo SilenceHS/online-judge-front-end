@@ -126,6 +126,14 @@ var router = new VueRouter({
 					type: 'login'
 				},
 			},
+			{
+				path: 'info',
+				component: (resolve) => require(['components/main/info'], resolve),
+				meta: {
+					title: '修改信息',
+					type: 'login'
+				},
+			},
 
 			
 
